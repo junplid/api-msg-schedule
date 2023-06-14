@@ -1,0 +1,10 @@
+app/node_modules
+/mysql
+/app/dist
+redis/dump.rdb
+/data
+app/tokens
+/redis
+.env
+/app/.env
+/app/src/uploads_images/**/*[.jpg|.png]

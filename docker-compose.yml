@@ -1,0 +1,41 @@
+version: "3.4"
+
+services:
+  mysqldb:
+    image: mysql:5.7
+    container_name: ${CONTAINER_NAME_MYSQL}
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=${MYSQLDB_DATABASE}
+    ports:
+      - $MYSQLDB_LOCAL_PORT:${MYSQLDB_DOCKER_PORT}
+    volumes:
+      - ./mysql:/var/lib/mysql
+    networks:
+      - rede_docker_msg
+
+  app:
+    container_name: ${CONTAINER_NAME_API}
+    depends_on:
+      - mysqldb
+    build: ./app
+    env_file: ./.env
+    ports:
+      - ${NODE_LOCAL_PORT}:${NODE_DOCKER_PORT}
+    environment:
+      - DB_HOST=mysqldb
+      - DB_USER=${MYSQLDB_USER}
+      - DB_PASSWORD=${MYSQLDB_ROOT_PASSWORD}
+      - DB_NAME=${MYSQLDB_DATABASE}
+      - DB_PORT=${MYSQLDB_DOCKER_PORT}
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./app:/app
+    networks:
+      - rede_docker_msg
+
+networks:
+  rede_docker_msg:
