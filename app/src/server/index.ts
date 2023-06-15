@@ -3,6 +3,7 @@ import { App } from "./app";
 import { startVenomBot } from "../adapters/VenomBot/start";
 import { PrismaClient } from "@prisma/client";
 import { Whatsapp } from "venom-bot";
+import { ValidationError } from "express-validation";
 
 config();
 
@@ -20,7 +21,14 @@ config();
 //     throw new Error("Error");
 //   }) as Promise<Whatsapp>;
 
-new PrismaClient().$connect();
+App.use(function (err, req, res, next) {
+  if (err instanceof ValidationError) {
+    return res.status(err.statusCode).json(err);
+  }
+
+  return res.status(500).json(err);
+});
+
 App.listen(process.env.NODE_DOCKER_PORT ?? 8080, () =>
   console.log(`Servidor rodando na porta: 6868`)
 );
