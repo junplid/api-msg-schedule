@@ -21,7 +21,7 @@ export class ConfirmCodeUseCase {
 
     const token = await createToken(
       { key: dto.keyuser },
-      process.env.SECRET_TOKEN_API as string
+      process.env.SECRET_TOKEN_API_USER as string
     );
 
     return { message: "OK", data: { token } };

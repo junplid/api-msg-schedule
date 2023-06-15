@@ -3,12 +3,14 @@ import { CreateUserDTO_I } from "./DTO";
 import { RunUseCase_I } from "../../../../types/global";
 import { newUser } from "../../../../entities/User";
 import { NodeMailer } from "../../../../adapters/NodeMailer";
+import { generatePassword } from "../../../../common/utils/crypto-password";
 
 export class CreateUserUseCase {
   constructor(private createUser: CreateUserRepository_I) {}
 
   async run(dto: CreateUserDTO_I): Promise<RunUseCase_I> {
-    const user = newUser({ ...dto, type: "user" });
+    const pass = await generatePassword(dto.password);
+    const user = newUser({ ...dto, type: "user", password: pass });
 
     const sendCode = await NodeMailer(
       {

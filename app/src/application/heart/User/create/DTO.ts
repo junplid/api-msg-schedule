@@ -4,5 +4,4 @@ export interface CreateUserDTO_I {
   email: string;
   password: string;
   birth_date: Date;
-  cpf: string;
 }

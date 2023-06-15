@@ -8,19 +8,11 @@ export const VerifyToken = async (
   const { token, nivel } = req.params;
 
   try {
-    const tokenData = await decodeToken(
-      token,
-      String(process.env[`SECRET_TOKEN_${nivel}`])
-    );
+    await decodeToken(token, String(process.env[`SECRET_TOKEN_API_${nivel}`]));
 
     return res.status(200).json({
-      message: "Token de acesso valido. Bem-vindo de volta.",
-      data: {
-        token,
-        level: tokenData?.level,
-        idUser: tokenData?.id,
-        parther_id: tokenData?.parther_id,
-      },
+      message: "OK",
+      data: { token },
     });
   } catch (error: any) {
     return res.status(401).json({
