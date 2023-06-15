@@ -1,11 +1,7 @@
 import { sign, verify } from "jsonwebtoken";
-import { expect_I } from "../../middleware/Auth/VerifyTokenGlobal";
 
 interface TokenProps {
-  id: string;
-  key?: string;
-  level: expect_I | number;
-  parther_id?: string;
+  key: string;
 }
 
 export const createToken = async (

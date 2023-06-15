@@ -1,14 +1,16 @@
 import { Request, Response } from "express";
-import { CreateUserDTO_I } from "./DTO";
-import { CreateUserUseCase } from "./UseCase";
+import { ConfirmCodeDTO_I } from "./DTO";
+import { ConfirmCodeUseCase } from "./UseCase";
 
-export const CreateUserController = (createUserUseCase: CreateUserUseCase) => {
+export const ConfirmCodeController = (
+  confirmCodeUseCase: ConfirmCodeUseCase
+) => {
   const execute = async (
-    req: Request<any, any, CreateUserDTO_I>,
+    req: Request<ConfirmCodeDTO_I>,
     res: Response
   ): Promise<Response> => {
     try {
-      const data = await createUserUseCase.run(req.body);
+      const data = await confirmCodeUseCase.run(req.params);
       return res.status(201).json(data);
     } catch (error: any) {
       return res.status(400).json({ message: error.message });

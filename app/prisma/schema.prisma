@@ -9,7 +9,7 @@ datasource db {
 
 model users {
   id          Int       @id @unique @default(autoincrement())
-  key         String    @db.VarChar(50)
+  key         String    @unique @db.VarChar(50)
   full_name   String    @db.VarChar(200)
   whatsapp    String    @unique @db.VarChar(15)
   email       String    @unique @db.VarChar(200)
