@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { Joi, validate } from "express-validation";
 import { createUserController } from "../../../../../application/heart/User/create";
+import { loginController } from "../../../../../application/heart/User/login";
 
 const router = Router();
 
@@ -18,6 +19,17 @@ router.post(
     }),
   }),
   createUserController
+);
+
+router.post(
+  "/login",
+  validate({
+    body: Joi.object({
+      email: Joi.string().email().max(200).required(),
+      password: Joi.string().min(6).required(),
+    }),
+  }),
+  loginController
 );
 
 export { router as RouterCreate };

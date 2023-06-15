@@ -15,6 +15,7 @@
     "express-validation": "^4.1.0",
     "jsonwebtoken": "^9.0.0",
     "mercadopago": "^0.0.6",
+    "moment": "^2.29.4",
     "nodemailer": "^6.7.8",
     "uuid": "9.0.0",
     "validate-date": "^2.0.0",
