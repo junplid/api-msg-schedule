@@ -17,6 +17,7 @@
     "mercadopago": "^0.0.6",
     "moment": "^2.29.4",
     "nodemailer": "^6.7.8",
+    "redis": "^4.6.7",
     "uuid": "9.0.0",
     "validate-date": "^2.0.0",
     "venom-bot": "^5.0.1"
