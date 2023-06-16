@@ -3,6 +3,7 @@ import { LoginDTO_I } from "./DTO";
 import { RunUseCase_I } from "../../../../types/global";
 import { comparePassword } from "../../../../common/utils/crypto-password";
 import { createToken } from "../../../../common/utils/token-access";
+import { ValidationError } from "express-validation";
 
 export class LoginUseCase {
   constructor(private login: LoginRepository_I) {}
@@ -10,14 +11,27 @@ export class LoginUseCase {
   async run(dto: LoginDTO_I): Promise<RunUseCase_I> {
     const data = await this.login.getInfo(dto.email);
 
-    if (!data || !(await comparePassword(dto.password, data.password)))
+    if (!data || !(await comparePassword(dto.password, data.password))) {
       throw {
-        status: 422,
-        message: "E-mail ou senha incorreta",
-        data: {
-          fields: ["email", "password"],
+        message: "E-mail ou senha incorreta.",
+        statusCode: 422,
+        details: {
+          body: [
+            {
+              details: [
+                {
+                  path: ["email", "password"],
+                  message: "E-mail ou senha incorreta.",
+                  type: "Error credentials",
+                },
+              ],
+            },
+          ],
         },
-      };
+        error: "E-mail ou senha incorreta.",
+        name: "Error",
+      } as ValidationError;
+    }
 
     if (!data.available) {
       return { message: "Conta não está verificada" };

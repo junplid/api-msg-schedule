@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { CreateUserDTO_I } from "./DTO";
 import { CreateUserUseCase } from "./UseCase";
+import { ValidationError } from "express-validation";
 
 export const CreateUserController = (createUserUseCase: CreateUserUseCase) => {
   const execute = async (
@@ -11,7 +12,10 @@ export const CreateUserController = (createUserUseCase: CreateUserUseCase) => {
       const data = await createUserUseCase.run(req.body);
       return res.status(201).json(data);
     } catch (error: any) {
-      return res.status(400).json({ message: error.message });
+      if (error instanceof ValidationError) {
+        return res.status(error.statusCode).json(error.details);
+      }
+      return res.status(500).json(error);
     }
   };
 

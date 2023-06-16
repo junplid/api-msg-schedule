@@ -2,6 +2,7 @@ import { ResendCodeRepository_I } from "./Repository";
 import { ResendCodeDTO_I } from "./DTO";
 import { RunUseCase_I } from "../../../../types/global";
 import { NodeMailer } from "../../../../adapters/NodeMailer";
+import { ValidationError } from "express-validation";
 
 export class ResendCodeUseCase {
   constructor(private resendCode: ResendCodeRepository_I) {}
@@ -9,8 +10,47 @@ export class ResendCodeUseCase {
   async run(dto: ResendCodeDTO_I): Promise<RunUseCase_I> {
     const data = await this.resendCode.getInfo(dto.keyuser);
 
-    if (!data) throw new Error("Error interno no servidor.");
-    if (data.available) throw new Error("Usuário já foi verificado.");
+    if (!data) {
+      throw {
+        message: "Usuário não encontrado.",
+        statusCode: 400,
+        details: {
+          body: [
+            {
+              details: [
+                {
+                  message: "Usuário não encontrado.",
+                  type: "not found",
+                },
+              ],
+            },
+          ],
+        },
+        error: "Usuário não encontrado.",
+        name: "not found",
+      } as ValidationError;
+    }
+
+    if (data.available) {
+      throw {
+        message: "Usuário já foi verificado.",
+        statusCode: 400,
+        details: {
+          body: [
+            {
+              details: [
+                {
+                  message: "Usuário já foi verificado.",
+                  type: "bad",
+                },
+              ],
+            },
+          ],
+        },
+        error: "Usuário já foi verificado.",
+        name: "bad",
+      } as ValidationError;
+    }
 
     const sendCode = await NodeMailer(
       {
@@ -30,8 +70,32 @@ export class ResendCodeUseCase {
       }
     );
 
-    if (!sendCode)
-      throw new Error("Error ao tentar enviar cádigo com confirmação");
+    if (!sendCode) {
+      throw {
+        message: "Error ao tentar enviar código com confirmação.",
+        statusCode: 400,
+        details: {
+          body: [
+            {
+              details: [
+                {
+                  path: ["mail"],
+                  message: "Error ao tentar enviar código com confirmação.",
+                  type: "Error mail",
+                  context: {
+                    key: "mail",
+                    label: "mail",
+                    value: "mail",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        error: "Error ao tentar enviar código com confirmação.",
+        name: "Error",
+      } as ValidationError;
+    }
 
     return { message: "OK" };
   }

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { LoginDTO_I } from "./DTO";
 import { LoginUseCase } from "./UseCase";
-import { RunUseCase_I } from "../../../../types/global";
+import { ValidationError } from "express-validation";
 
 export const LoginController = (loginUseCase: LoginUseCase) => {
   const execute = async (
@@ -12,8 +12,10 @@ export const LoginController = (loginUseCase: LoginUseCase) => {
       const data = await loginUseCase.run(req.body);
       return res.status(201).json(data);
     } catch (error: any) {
-      const err: RunUseCase_I = error;
-      return res.status(err.status ?? 400).json(err);
+      if (error instanceof ValidationError) {
+        return res.status(error.statusCode).json(error.details);
+      }
+      return res.status(500).json(error);
     }
   };
 

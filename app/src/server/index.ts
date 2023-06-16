@@ -4,6 +4,7 @@ import { startVenomBot } from "../adapters/VenomBot/start";
 import { PrismaClient } from "@prisma/client";
 import { Whatsapp } from "venom-bot";
 import { ValidationError } from "express-validation";
+import { RunUseCase_I } from "../types/global";
 
 config();
 
@@ -23,7 +24,7 @@ config();
 
 App.use(function (err, req, res, next) {
   if (err instanceof ValidationError) {
-    return res.status(err.statusCode).json(err);
+    return res.status(err.statusCode).json(err.details);
   }
 
   return res.status(500).json(err);

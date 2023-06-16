@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { ResendCodeDTO_I } from "./DTO";
 import { ResendCodeUseCase } from "./UseCase";
+import { ValidationError } from "express-validation";
 
 export const ResendCodeController = (resendCodeUseCase: ResendCodeUseCase) => {
   const execute = async (
@@ -11,7 +12,10 @@ export const ResendCodeController = (resendCodeUseCase: ResendCodeUseCase) => {
       const data = await resendCodeUseCase.run(req.params);
       return res.status(200).json(data);
     } catch (error: any) {
-      return res.status(400).json({ message: error.message });
+      if (error instanceof ValidationError) {
+        return res.status(error.statusCode).json(error.details);
+      }
+      return res.status(500).json(error);
     }
   };
 

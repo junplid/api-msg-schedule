@@ -4,6 +4,7 @@ import { RunUseCase_I } from "../../../../types/global";
 import { newUser } from "../../../../entities/User";
 import { NodeMailer } from "../../../../adapters/NodeMailer";
 import { generatePassword } from "../../../../common/utils/crypto-password";
+import { ValidationError } from "express-validation";
 
 export class CreateUserUseCase {
   constructor(private createUser: CreateUserRepository_I) {}
@@ -30,8 +31,32 @@ export class CreateUserUseCase {
       }
     );
 
-    if (!sendCode)
-      throw new Error("Error ao tentar enviar cádigo com confirmação");
+    if (!sendCode) {
+      throw {
+        message: "Error ao tentar enviar código com confirmação.",
+        statusCode: 400,
+        details: {
+          body: [
+            {
+              details: [
+                {
+                  path: ["mail"],
+                  message: "Error ao tentar enviar código com confirmação.",
+                  type: "Error mail",
+                  context: {
+                    key: "mail",
+                    label: "mail",
+                    value: "mail",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        error: "Error ao tentar enviar código com confirmação.",
+        name: "Error",
+      } as ValidationError;
+    }
 
     await this.createUser.create(user);
 

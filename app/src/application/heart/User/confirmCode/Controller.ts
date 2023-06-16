@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { ConfirmCodeDTO_I } from "./DTO";
 import { ConfirmCodeUseCase } from "./UseCase";
+import { ValidationError } from "express-validation";
 
 export const ConfirmCodeController = (
   confirmCodeUseCase: ConfirmCodeUseCase
@@ -13,7 +14,10 @@ export const ConfirmCodeController = (
       const data = await confirmCodeUseCase.run(req.params);
       return res.status(200).json(data);
     } catch (error: any) {
-      return res.status(400).json({ message: error.message });
+      if (error instanceof ValidationError) {
+        return res.status(error.statusCode).json(error.details);
+      }
+      return res.status(500).json(error);
     }
   };
 

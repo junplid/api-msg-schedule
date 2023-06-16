@@ -3,6 +3,7 @@ import { ChangeFieldsUserDTO_I } from "./DTO";
 import { ChangeFieldsUserUseCase } from "./UseCase";
 import { getTokenHeader } from "../../../../common/utils/get-token";
 import { decodeToken } from "../../../../common/utils/token-access";
+import { ValidationError } from "express-validation";
 
 export const ChangeFieldsUserController = (
   changeFieldsUserUseCase: ChangeFieldsUserUseCase
@@ -21,7 +22,10 @@ export const ChangeFieldsUserController = (
       const data = await changeFieldsUserUseCase.run({ ...req.query, key });
       return res.status(200).json(data);
     } catch (error: any) {
-      return res.status(400).json({ message: error.message });
+      if (error instanceof ValidationError) {
+        return res.status(error.statusCode).json(error.details);
+      }
+      return res.status(500).json(error);
     }
   };
 
