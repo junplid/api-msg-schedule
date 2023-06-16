@@ -16,16 +16,12 @@ export const VerifyTokenMiddleware = async (
       .then((e) => e.key)
       .catch(() => null);
 
-    console.log("root", key_root);
-
     const key_user = await decodeToken(
       token,
       String(process.env.SECRET_TOKEN_API_USER)
     )
       .then((e) => e.key)
       .catch(() => null);
-
-    console.log("user", key_user);
 
     if (!key_root && !key_user) {
       return res.status(401).json({
@@ -36,8 +32,6 @@ export const VerifyTokenMiddleware = async (
     const userExist = await new PrismaClient().users.count({
       where: { key: (key_root ?? key_user) as string },
     });
-
-    console.log(userExist);
 
     if (!userExist) {
       return res.status(401).json({
