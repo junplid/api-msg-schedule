@@ -9,13 +9,19 @@ router.post(
   "/register-user",
   validate({
     body: Joi.object({
-      full_name: Joi.string().max(200).regex(/^\D+$/).required().messages({
-        "string.empty": "Campo obrigatório",
-        "any.required": "Campo obrigatório",
-        "string.max": "Este campo precisa ter no máximo 200 caracteres",
-        "string.base": "Este campo precisa ser uma string",
-        "string.regex": "Não insira número(s) aqui",
-      }),
+      full_name: Joi.string()
+        .min(6)
+        .max(200)
+        .regex(/^\D+$/)
+        .required()
+        .messages({
+          "string.empty": "Campo obrigatório",
+          "string.min": "Insira seu nome completo",
+          "any.required": "Campo obrigatório",
+          "string.max": "Este campo precisa ter no máximo 200 caracteres",
+          "string.base": "Este campo precisa ser uma string",
+          "string.regex": "Não insira número(s) aqui",
+        }),
       email: Joi.string().email().max(200).required().messages({
         "string.empty": "Campo obrigatório",
         "any.required": "Campo obrigatório",
@@ -30,7 +36,7 @@ router.post(
           "string.empty": "Campo obrigatório",
           "any.required": "Campo obrigatório",
           "string.base": "Este campo precisa ser uma string",
-          "string.pattern.base": "Insira somente números aqui",
+          "string.pattern.base": "Insira um whatsapp valido",
         }),
       password: Joi.string().min(6).required().messages({
         "string.empty": "Campo obrigatório",

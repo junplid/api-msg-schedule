@@ -18,23 +18,18 @@ export class LoginUseCase {
         details: {
           body: [
             {
-              details: [
-                {
-                  path: ["email", "password"],
-                  message: "E-mail ou senha incorreta.",
-                  type: "Error credentials",
-                },
-              ],
+              message: "E-mail ou senha incorreta.",
+              context: {
+                label: "email",
+                key: "email",
+              },
+              path: ["email", "password"],
             },
           ],
         },
         error: "E-mail ou senha incorreta.",
         name: "Error",
-      } as ValidationError;
-    }
-
-    if (!data.available) {
-      return { message: "Conta não está verificada" };
+      };
     }
 
     if (new Date(data.due_date!) < new Date()) {

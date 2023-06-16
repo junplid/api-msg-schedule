@@ -12,10 +12,7 @@ export const LoginController = (loginUseCase: LoginUseCase) => {
       const data = await loginUseCase.run(req.body);
       return res.status(201).json(data);
     } catch (error: any) {
-      if (error instanceof ValidationError) {
-        return res.status(error.statusCode).json(error.details);
-      }
-      return res.status(500).json(error);
+      return res.status(error.statusCode).json(error.details);
     }
   };
 

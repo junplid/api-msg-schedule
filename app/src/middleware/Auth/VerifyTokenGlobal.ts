@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { decodeToken } from "../../common/utils/token-access";
 import { PrismaClient } from "@prisma/client";
+import { getTokenHeader } from "../../common/utils/get-token";
 
 interface verifyTokenAcessGlobal_I {
   execute(req: Request, res: Response, next: NextFunction): Promise<any>;
@@ -16,24 +17,7 @@ export const verifyTokenAcessGlobal = (
     res: Response,
     next: NextFunction
   ): Promise<any> => {
-    const authorization = req.headers.authorization;
-
-    const splitAuth = authorization?.split(" ").length;
-    const BEARER = authorization?.split(" ")[0];
-
-    if (splitAuth !== 2) {
-      return res.status(401).json({
-        message: "Não autorizado.",
-      });
-    }
-
-    if (BEARER !== "BEARER") {
-      return res.status(401).json({
-        message: "Não autorizado.",
-      });
-    }
-
-    const TOKEN = authorization?.split(" ")[1]!;
+    const TOKEN = await getTokenHeader(req);
 
     try {
       const { key } = await decodeToken(
