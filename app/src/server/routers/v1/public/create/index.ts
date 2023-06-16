@@ -9,12 +9,35 @@ router.post(
   "/register-user",
   validate({
     body: Joi.object({
-      full_name: Joi.string().max(200).regex(/^\D+$/).required(),
+      full_name: Joi.string().max(200).regex(/^\D+$/).required().messages({
+        "string.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "string.max": "Este campo precisa ter no máximo 200 caracteres",
+        "string.base": "Este campo precisa ser uma string",
+        "string.regex": "Não insira número(s) aqui",
+      }),
       whatsapp: Joi.string()
         .regex(/^[1-9]{2}(?:[2-8]|9[1-9])[0-9]{3}[0-9]{4}$/)
-        .required(),
-      email: Joi.string().email().max(200).required(),
-      password: Joi.string().min(6).required(),
+        .required()
+        .messages({
+          "string.empty": "Campo obrigatório",
+          "any.required": "Campo obrigatório",
+          "string.base": "Este campo precisa ser uma string",
+          "string.regex": "Insira somente números aqui",
+        }),
+      email: Joi.string().email().max(200).required().messages({
+        "string.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "string.base": "Este campo precisa ser uma string",
+        "string.email": "Insira um e-mail valido",
+        "string.max": "O e-mail precisa ter no máximo 200 caracteres",
+      }),
+      password: Joi.string().min(6).required().messages({
+        "string.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "string.base": "Este campo precisa ser uma string",
+        "string.min": "A senha precisa ter pelomenos 6 caracteres",
+      }),
     }),
   }),
   createUserController
@@ -29,7 +52,7 @@ router.post(
         "string.empty": "Campo obrigatório",
         "any.required": "Campo obrigatório",
         "string.max": "O e-mail precisa ter no máximo 200 caracteres",
-        "string.base": "A e-mail precisa se uma string",
+        "string.base": "Este campo precisa se uma string",
         "string.email": "Insira um e-mail valido",
       }),
       password: Joi.string().min(6).required().messages({
