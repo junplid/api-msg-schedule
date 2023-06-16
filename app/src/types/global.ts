@@ -6,5 +6,6 @@ export interface GlobalController_I<T = any> {
 
 export interface RunUseCase_I<T = any> {
   message: string;
+  status?: number;
   data?: T;
 }

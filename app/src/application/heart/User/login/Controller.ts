@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { LoginDTO_I } from "./DTO";
 import { LoginUseCase } from "./UseCase";
+import { RunUseCase_I } from "../../../../types/global";
 
 export const LoginController = (loginUseCase: LoginUseCase) => {
   const execute = async (
@@ -11,7 +12,8 @@ export const LoginController = (loginUseCase: LoginUseCase) => {
       const data = await loginUseCase.run(req.body);
       return res.status(201).json(data);
     } catch (error: any) {
-      return res.status(400).json({ message: error.message });
+      const err: RunUseCase_I = error;
+      return res.status(err.status ?? 400).json(err);
     }
   };
 

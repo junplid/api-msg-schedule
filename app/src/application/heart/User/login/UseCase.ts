@@ -13,8 +13,8 @@ export class LoginUseCase {
     if (!data || !(await comparePassword(dto.password, data.password)))
       throw {
         status: 422,
+        message: "E-mail ou senha incorreta",
         data: {
-          message: "E-mail ou senha incorreta",
           fields: ["email", "password"],
         },
       };
