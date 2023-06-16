@@ -30,7 +30,7 @@ router.post(
           "string.empty": "Campo obrigatório",
           "any.required": "Campo obrigatório",
           "string.base": "Este campo precisa ser uma string",
-          "string.regex": "Insira somente números aqui",
+          "string.pattern.base": "Insira somente números aqui",
         }),
       password: Joi.string().min(6).required().messages({
         "string.empty": "Campo obrigatório",
