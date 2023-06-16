@@ -16,6 +16,13 @@ router.post(
         "string.base": "Este campo precisa ser uma string",
         "string.regex": "Não insira número(s) aqui",
       }),
+      email: Joi.string().email().max(200).required().messages({
+        "string.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "string.base": "Este campo precisa ser uma string",
+        "string.email": "Insira um e-mail valido",
+        "string.max": "O e-mail precisa ter no máximo 200 caracteres",
+      }),
       whatsapp: Joi.string()
         .regex(/^[1-9]{2}(?:[2-8]|9[1-9])[0-9]{3}[0-9]{4}$/)
         .required()
@@ -25,13 +32,6 @@ router.post(
           "string.base": "Este campo precisa ser uma string",
           "string.regex": "Insira somente números aqui",
         }),
-      email: Joi.string().email().max(200).required().messages({
-        "string.empty": "Campo obrigatório",
-        "any.required": "Campo obrigatório",
-        "string.base": "Este campo precisa ser uma string",
-        "string.email": "Insira um e-mail valido",
-        "string.max": "O e-mail precisa ter no máximo 200 caracteres",
-      }),
       password: Joi.string().min(6).required().messages({
         "string.empty": "Campo obrigatório",
         "any.required": "Campo obrigatório",
