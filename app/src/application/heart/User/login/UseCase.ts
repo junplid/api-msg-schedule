@@ -3,7 +3,6 @@ import { LoginDTO_I } from "./DTO";
 import { RunUseCase_I } from "../../../../types/global";
 import { comparePassword } from "../../../../common/utils/crypto-password";
 import { createToken } from "../../../../common/utils/token-access";
-import { ValidationError } from "express-validation";
 
 export class LoginUseCase {
   constructor(private login: LoginRepository_I) {}
@@ -32,7 +31,7 @@ export class LoginUseCase {
       };
     }
 
-    if (new Date(data.due_date!) < new Date()) {
+    if (data.type === "user" && new Date(data.due_date!) < new Date()) {
       return {
         message: "Sua conta expirou. Renove sua assinatura agora mesmo!",
       };
@@ -45,7 +44,7 @@ export class LoginUseCase {
 
     return {
       message: "OK",
-      data: { token },
+      data: { token, full_name: data.full_name, type: data.type },
     };
   }
 }

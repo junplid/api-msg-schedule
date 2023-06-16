@@ -29,8 +29,9 @@ export const VerifyTokenMiddleware = async (
       });
     }
 
-    const userExist = await new PrismaClient().users.count({
+    const userExist = await new PrismaClient().users.findUnique({
       where: { key: (key_root ?? key_user) as string },
+      select: { full_name: true, type: true },
     });
 
     if (!userExist) {
@@ -40,6 +41,7 @@ export const VerifyTokenMiddleware = async (
     }
     return res.status(200).json({
       message: "Ok",
+      data: userExist,
     });
   } catch (error: any) {
     return res.status(401).json({

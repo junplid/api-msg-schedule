@@ -1,5 +1,5 @@
 export interface resultInfo_I {
-  available: number | null;
+  full_name: string;
   password: string;
   key: string;
   due_date: Date | null;

@@ -10,7 +10,7 @@ export class LoginImplementation
       return await this.prismaClient.users.findUnique({
         where: { email },
         select: {
-          available: true,
+          full_name: true,
           password: true,
           key: true,
           due_date: true,
