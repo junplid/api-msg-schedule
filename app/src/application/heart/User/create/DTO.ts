@@ -3,5 +3,4 @@ export interface CreateUserDTO_I {
   whatsapp: string;
   email: string;
   password: string;
-  birth_date: Date;
 }

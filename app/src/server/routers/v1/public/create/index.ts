@@ -15,7 +15,6 @@ router.post(
         .required(),
       email: Joi.string().email().max(200).required(),
       password: Joi.string().min(6).required(),
-      birth_date: Joi.date().required(),
     }),
   }),
   createUserController
@@ -28,11 +27,13 @@ router.post(
     body: Joi.object({
       email: Joi.string().email().max(200).required().messages({
         "string.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
         "string.max": "O e-mail precisa ter no máximo 200 caracteres",
         "string.base": "A e-mail precisa se uma string",
         "string.email": "Insira um e-mail valido",
       }),
       password: Joi.string().min(6).required().messages({
+        "any.required": "Campo obrigatório",
         "string.empty": "Campo obrigatório",
         "string.min": "A senha precisa ter pelomenos 6 caracteres",
         "string.base": "A senha precisa se uma string",

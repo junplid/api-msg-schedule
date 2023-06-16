@@ -10,7 +10,6 @@ export interface User_I {
   whatsapp: string;
   email: string;
   password: string;
-  birth_date: Date;
   type: TypesUser_T;
   code?: string;
   available?: number;
@@ -25,7 +24,6 @@ export function newUser(
   return {
     ...props,
     due_date: new Date(moment().add(7, "days").toString()),
-    birth_date: new Date(props.birth_date),
     createAt: new Date(),
     code: String(Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000),
     key: v4(),
