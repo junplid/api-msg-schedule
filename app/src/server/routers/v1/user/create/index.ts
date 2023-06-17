@@ -7,7 +7,6 @@ const router = Router();
 
 router.post(
   "/message",
-  verifyTokenAcessGlobal().execute,
   validate({
     body: Joi.object({
       text: Joi.string().required().messages({
