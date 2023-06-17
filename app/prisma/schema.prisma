@@ -20,4 +20,13 @@ model users {
   payday      DateTime?
   due_date    DateTime?
   createAt    DateTime?
+  messages    messages[]
 }
+
+model messages {
+  id        Int     @id @default(autoincrement())
+  content   String
+  user_id   Int
+  user      users   @relation(fields: [user_id], references: [id])
+}
+

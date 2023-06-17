@@ -1,7 +1,0 @@
-{
-  "execMap": {
-    "ts": "ts-node"
-  },
-  "verbose": true,
-  "ignore": [".git", "tokens", "node_modules/**/node_modules"]
-}

@@ -44,7 +44,12 @@ export class LoginUseCase {
 
     return {
       message: "OK",
-      data: { token, full_name: data.full_name, type: data.type },
+      data: {
+        token,
+        full_name: data.full_name,
+        type: data.type,
+        key: data.key,
+      },
     };
   }
 }
