@@ -25,8 +25,9 @@ model users {
 
 model messages {
   id        Int     @id @default(autoincrement())
-  content   String
-  user_id   Int
-  user      users   @relation(fields: [user_id], references: [id])
+  text      String
+  days      Int
+  user_key  String  @unique @db.VarChar(50)
+  user      users   @relation(fields: [user_key], references: [key])
 }
 

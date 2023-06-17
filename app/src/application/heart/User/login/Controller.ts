@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { LoginDTO_I } from "./DTO";
 import { LoginUseCase } from "./UseCase";
-import { ValidationError } from "express-validation";
 
 export const LoginController = (loginUseCase: LoginUseCase) => {
   const execute = async (

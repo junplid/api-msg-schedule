@@ -7,11 +7,7 @@ interface verifyTokenAcessGlobal_I {
   execute(req: Request, res: Response, next: NextFunction): Promise<any>;
 }
 
-export type expect_I = "USER" | "ROOT";
-
-export const verifyTokenAcessGlobal = (
-  expect: expect_I
-): verifyTokenAcessGlobal_I => {
+export const verifyTokenAcessGlobal = (): verifyTokenAcessGlobal_I => {
   const execute = async (
     req: Request,
     res: Response,
@@ -20,13 +16,29 @@ export const verifyTokenAcessGlobal = (
     const TOKEN = await getTokenHeader(req);
 
     try {
-      const { key } = await decodeToken(
+      const key_root = await decodeToken(
         TOKEN,
-        String(process.env[`SECRET_TOKEN_API_${expect}`])
-      );
+        String(process.env.SECRET_TOKEN_API_ROOT)
+      )
+        .then((e) => e.key)
+        .catch(() => null);
 
-      const userExist = await new PrismaClient().users.count({
-        where: { key },
+      const key_user = await decodeToken(
+        TOKEN,
+        String(process.env.SECRET_TOKEN_API_USER)
+      )
+        .then((e) => e.key)
+        .catch(() => null);
+
+      if (!key_root && !key_user) {
+        return res.status(401).json({
+          message: "Não autorizado.",
+        });
+      }
+
+      const userExist = await new PrismaClient().users.findUnique({
+        where: { key: (key_root ?? key_user) as string },
+        select: { full_name: true, type: true },
       });
 
       if (!userExist) {
@@ -34,6 +46,8 @@ export const verifyTokenAcessGlobal = (
           message: "Não autorizado.",
         });
       }
+
+      req.body.user_key = key_root ?? key_user;
 
       return next();
     } catch (error: any) {

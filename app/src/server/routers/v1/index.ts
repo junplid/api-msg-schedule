@@ -6,6 +6,6 @@ import { verifyTokenAcessGlobal } from "../../../middleware/Auth/VerifyTokenGlob
 const router = Router();
 
 router.use("/public", RouterPublic);
-router.use("/user", verifyTokenAcessGlobal("USER").execute, RouterUser);
+router.use("/user", verifyTokenAcessGlobal().execute, RouterUser);
 
 export { router };
