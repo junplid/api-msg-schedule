@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { createMessageController } from "../../../../../application/heart/Message/create";
 import { Joi, validate } from "express-validation";
-import { verifyTokenAcessGlobal } from "../../../../../middleware/Auth/VerifyTokenGlobal";
 
 const router = Router();
 
