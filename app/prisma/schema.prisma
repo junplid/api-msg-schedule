@@ -21,12 +21,21 @@ model users {
   due_date    DateTime?
   createAt    DateTime?
   messages    messages[]
+  products    products[]
 }
 
 model messages {
   id        Int     @id @default(autoincrement())
   text      String
   days      Int
+  user_key  String  @unique @db.VarChar(50)
+  user      users   @relation(fields: [user_key], references: [key])
+}
+
+model products {
+  id        Int     @id @default(autoincrement())
+  name      String
+  price     Decimal @db.Decimal(5,2)
   user_key  String  @unique @db.VarChar(50)
   user      users   @relation(fields: [user_key], references: [key])
 }
