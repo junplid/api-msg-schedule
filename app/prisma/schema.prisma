@@ -38,5 +38,14 @@ model products {
   price     Decimal @db.Decimal(5,2)
   user_key  String  @unique @db.VarChar(50)
   user      users   @relation(fields: [user_key], references: [key])
+  plan      plans[]
+}
+
+model plans {
+  id          Int     @id @default(autoincrement())
+  name        String
+  price       Decimal @db.Decimal(5,2)
+  product_id  Int   
+  product     products   @relation(fields: [product_id], references: [id])
 }
 
