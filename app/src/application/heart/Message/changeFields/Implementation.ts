@@ -6,16 +6,16 @@ export class ChangeFieldsMessageImplementation
   extends PrismaCore
   implements ChangeFieldsMessageRepository_I
 {
-  async update(
-    {
-      id,
-      ...data
-    }: Omit<ChangeFieldsMessageDTO_I & { id: number }, "user_key">,
-    user_key: string
-  ): Promise<void> {
+  async update({
+    id,
+    ...data
+  }: Omit<
+    ChangeFieldsMessageDTO_I & { id: number; days: number },
+    "user_key"
+  >): Promise<void> {
     try {
       await this.prismaClient.messages.update({
-        where: { user_key, id },
+        where: { id },
         data,
       });
     } catch (error) {

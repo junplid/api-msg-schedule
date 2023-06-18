@@ -31,10 +31,8 @@ router.put(
       }),
     }),
     params: Joi.object({
-      params: Joi.object({
-        id: Joi.string().regex(/^\d+$/).required().messages({
-          "string.pattern.base": "Insira somente números para o id da mensagem",
-        }),
+      id: Joi.string().regex(/^\d+$/).required().messages({
+        "string.pattern.base": "Insira somente números para o id da mensagem",
       }),
     }),
     body: Joi.object({

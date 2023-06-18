@@ -40,10 +40,12 @@ export class ChangeFieldsMessageUseCase {
       };
     }
 
-    await this.changeFieldsMessage.update(
-      { ...dto, id: Number(dto.id) },
-      user_key
-    );
+    await this.changeFieldsMessage.update({
+      id: Number(dto.id),
+      ...(dto.days && { days: Number(dto.days) }),
+      ...(dto.text && { text: dto.text }),
+    });
+
     return { message: "OK" };
   }
 }
