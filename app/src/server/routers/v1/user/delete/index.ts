@@ -1,21 +1,25 @@
 import { Router } from "express";
-import { createMessageController } from "../../../../../application/heart/Message/create";
 import { Joi, validate } from "express-validation";
+import { dellMessageOfUserController } from "../../../../../application/heart/Message/delete";
 
 const router = Router();
 
 router.delete(
-  "/message",
+  "/message/:id",
   validate({
+    params: Joi.object({
+      id: Joi.string().required(),
+    }),
     body: Joi.object({
-      id: Joi.number().min(0).required().messages({
-        "any.empty": "Campo obrigatório",
+      user_key: Joi.string().max(55).required().messages({
+        "string.empty": "Campo obrigatório",
         "any.required": "Campo obrigatório",
-        "number.min": "Este campo precisar ser maior ou igual a 0",
+        "string.base": "Este campo precisa ser uma string",
+        "string.max": "O e-mail precisa ter no máximo 55 caracteres",
       }),
     }),
   }),
-  createMessageController
+  dellMessageOfUserController
 );
 
 export { router as RouterDelete };

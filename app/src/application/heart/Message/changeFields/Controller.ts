@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
-import { ChangeFieldsMessageDTO_I } from "./DTO";
+import {
+  ChangeFieldsMessageDTO_I,
+  ChangeFieldsMessageDTO_I_Params,
+} from "./DTO";
 import { ChangeFieldsMessageUseCase } from "./UseCase";
 import { ValidationError } from "express-validation";
 
@@ -7,13 +10,19 @@ export const ChangeFieldsMessageController = (
   changeFieldsMessageUseCase: ChangeFieldsMessageUseCase
 ) => {
   const execute = async (
-    req: Request<any, any, { user_key: string }, ChangeFieldsMessageDTO_I>,
+    req: Request<
+      ChangeFieldsMessageDTO_I_Params,
+      any,
+      { user_key: string },
+      ChangeFieldsMessageDTO_I
+    >,
     res: Response
   ): Promise<Response> => {
     try {
       const data = await changeFieldsMessageUseCase.run({
         ...req.query,
         user_key: req.body.user_key,
+        id: req.params.id,
       });
       return res.status(200).json(data);
     } catch (error: any) {

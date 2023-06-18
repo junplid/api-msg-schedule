@@ -13,9 +13,8 @@ export const verifyTokenAcessGlobal = (): verifyTokenAcessGlobal_I => {
     res: Response,
     next: NextFunction
   ): Promise<any> => {
-    const TOKEN = await getTokenHeader(req);
-
     try {
+      const TOKEN = await getTokenHeader(req);
       const key_root = await decodeToken(
         TOKEN,
         String(process.env.SECRET_TOKEN_API_ROOT)

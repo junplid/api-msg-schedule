@@ -7,11 +7,14 @@ export const DellMessageOfUserController = (
   dellMessageOfUserUseCase: DellMessageOfUserUseCase
 ) => {
   const execute = async (
-    req: Request<any, any, DellMessageOfUserDTO_I>,
+    req: Request<DellMessageOfUserDTO_I, any, { user_key: string }>,
     res: Response
   ): Promise<Response> => {
     try {
-      const data = await dellMessageOfUserUseCase.run(req.body);
+      const data = await dellMessageOfUserUseCase.run({
+        id: req.params.id,
+        user_key: req.body.user_key,
+      });
       return res.status(200).json(data);
     } catch (error: any) {
       if (error instanceof ValidationError) {

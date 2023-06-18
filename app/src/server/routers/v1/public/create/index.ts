@@ -20,7 +20,7 @@ router.post(
           "any.required": "Campo obrigatório",
           "string.max": "Este campo precisa ter no máximo 200 caracteres",
           "string.base": "Este campo precisa ser uma string",
-          "string.regex": "Não insira número(s) aqui",
+          "string.pattern.base": "Não insira número(s) aqui",
         }),
       email: Joi.string().email().max(200).required().messages({
         "string.empty": "Campo obrigatório",
@@ -51,7 +51,6 @@ router.post(
 
 router.post(
   "/login",
-  [],
   validate({
     body: Joi.object({
       email: Joi.string().email().max(200).required().messages({

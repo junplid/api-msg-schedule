@@ -20,13 +20,22 @@ router.put(
 );
 
 router.put(
-  "/change-field-message",
+  "/change-field-message/:id",
   validate({
     query: Joi.object({
       text: Joi.string().messages({
         "string.base": "Este campo precisa ser uma string",
       }),
-      days: Joi.string().regex(/^[1-9]{2}(?:[2-8]|9[1-9])[0-9]{3}[0-9]{4}$/),
+      days: Joi.string().regex(/^\d+$/).messages({
+        "string.pattern.base": "Insira somente números no campo dia",
+      }),
+    }),
+    params: Joi.object({
+      params: Joi.object({
+        id: Joi.string().regex(/^\d+$/).required().messages({
+          "string.pattern.base": "Insira somente números para o id da mensagem",
+        }),
+      }),
     }),
     body: Joi.object({
       user_key: Joi.string().max(55).required().messages({

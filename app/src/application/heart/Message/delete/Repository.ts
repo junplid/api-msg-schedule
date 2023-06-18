@@ -1,3 +1,4 @@
 export interface DellMessageOfUserRepository_I {
-  dell(user_key: string, id: number): Promise<void>;
+  dell(id: number): Promise<void>;
+  findMsg(id: number): Promise<string | null>;
 }

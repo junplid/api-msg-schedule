@@ -5,8 +5,38 @@ import { RunUseCase_I } from "../../../../types/global";
 export class DellMessageOfUserUseCase {
   constructor(private dellMessageOfUser: DellMessageOfUserRepository_I) {}
 
-  async run(dto: DellMessageOfUserDTO_I): Promise<RunUseCase_I> {
-    await this.dellMessageOfUser.dell(dto.user_key, dto.id);
+  async run(
+    dto: DellMessageOfUserDTO_I & { user_key: string }
+  ): Promise<RunUseCase_I> {
+    const keyUserMsg = await this.dellMessageOfUser.findMsg(Number(dto.id));
+
+    if (!keyUserMsg) {
+      throw {
+        message: "Mensagem não encontrada.",
+        statusCode: 400,
+        details: {
+          body: [{ message: "Mensagem não encontrada." }],
+        },
+        error: "Mensagem não encontrada.",
+        name: "not found",
+      };
+    }
+
+    if (keyUserMsg !== dto.user_key) {
+      throw {
+        message: "Só é possível excluir as mensagens que você criou.",
+        statusCode: 400,
+        details: {
+          body: [
+            { message: "Só é possível excluir as mensagens que você criou." },
+          ],
+        },
+        error: "Só é possível excluir as mensagens que você criou.",
+        name: "unauthorized",
+      };
+    }
+
+    await this.dellMessageOfUser.dell(Number(dto.id));
     return { message: "OK" };
   }
 }
