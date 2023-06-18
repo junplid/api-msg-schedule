@@ -28,24 +28,29 @@ model messages {
   id        Int     @id @default(autoincrement())
   text      String
   days      Int
-  user_key  String  @unique @db.VarChar(50)
+  user_key  String  @db.VarChar(50)
   user      users   @relation(fields: [user_key], references: [key], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model products {
-  id        Int     @id @default(autoincrement())
+  id        Int     @unique @default(autoincrement())
   name      String
   price     Decimal @db.Decimal(5,2)
   user_key  String  @unique @db.VarChar(50)
   user      users   @relation(fields: [user_key], references: [key], onDelete: Cascade, onUpdate: Cascade)
   plan      plans[]
+
+  @@id([id, user_key])
+  @@index([user_key])
 }
 
 model plans {
-  id          Int     @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   name        String
-  price       Decimal @db.Decimal(5,2)
-  product_id  Int   
-  product     products   @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  price       Decimal   @db.Decimal(5,2)
+  product_id  Int 
+  product     products  @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([product_id])
 }
 
