@@ -13,7 +13,7 @@ export class ListProductOfUserImplementation
         include: { plan: true },
       });
       return datas.map((e) => {
-        return { ...e, plans: e.plan, userId: undefined };
+        return { ...e, plans: e.plan, userId: undefined, plan: undefined };
       });
     } catch (error) {
       console.log(error);

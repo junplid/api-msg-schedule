@@ -1,7 +1,7 @@
 import { Plans, Product } from "../../../../entities/Product";
 
 export type propsCreatePData_I = Omit<
-  Product<Omit<Plans, "id" | "product_id">[]>,
+  Product<Omit<Plans, "id" | "productId">[]>,
   "id"
 >;
 

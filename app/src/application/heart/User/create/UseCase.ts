@@ -15,7 +15,6 @@ export class CreateUserUseCase {
 
     return {
       message: "OK",
-      data: { keyUser: user.key },
     };
   }
 }

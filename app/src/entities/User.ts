@@ -5,7 +5,6 @@ type TypesUser_T = "user" | "root";
 
 export interface User_I {
   id: number;
-  key: string;
   full_name: string;
   whatsapp: string;
   email: string;
@@ -26,6 +25,5 @@ export function newUser(
     due_date: new Date(moment().add(7, "days").toString()),
     createAt: new Date(),
     code: String(Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000),
-    key: v4(),
   };
 }
