@@ -14,11 +14,11 @@ export class ChangeFieldsPlanProductUseCase {
     userId: number;
     id: string;
   }): Promise<RunUseCase_I> {
-    const keyUserMsg = await this.changeFieldsPlanProduct.findPlan(
+    const dataInfo = await this.changeFieldsPlanProduct.findPlan(
       Number(dto.id)
     );
 
-    if (!keyUserMsg) {
+    if (!dataInfo) {
       throw {
         message: "Mensagem não encontrada.",
         statusCode: 400,
@@ -30,7 +30,7 @@ export class ChangeFieldsPlanProductUseCase {
       };
     }
 
-    if (keyUserMsg !== userId) {
+    if (dataInfo.userId !== userId) {
       throw {
         message: "Só é possível editar as mensagens que você criou.",
         statusCode: 400,
@@ -46,8 +46,9 @@ export class ChangeFieldsPlanProductUseCase {
 
     await this.changeFieldsPlanProduct.update({
       id: Number(dto.id),
-      ...(dto.price && { days: Number(dto.price) }),
-      ...(dto.name && { text: dto.name }),
+      ...(dto.price && { price: Number(dto.price) }),
+      ...(dto.name && { name: dto.name }),
+      productId: dataInfo.productId,
     });
 
     return { message: "OK" };
