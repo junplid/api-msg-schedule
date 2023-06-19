@@ -3,6 +3,7 @@ import { Joi, validate } from "express-validation";
 import { changeFieldsUserController } from "../../../../../application/heart/User/changeFields";
 import { changeFieldsMessageController } from "../../../../../application/heart/Message/changeFields";
 import { changeFieldsProductController } from "../../../../../application/heart/Product/changeFields";
+import { changeFieldsPlanProductController } from "../../../../../application/heart/Product/changeFieldsPlan";
 
 const router = Router();
 
@@ -80,6 +81,32 @@ router.put(
     }),
   }),
   changeFieldsProductController
+);
+
+router.put(
+  "/change-field-plan-product/:id",
+  validate({
+    query: Joi.object({
+      name: Joi.string().messages({
+        "string.base": "Este campo precisa ser uma string",
+      }),
+      price: Joi.number(),
+    }),
+    params: Joi.object({
+      id: Joi.string().regex(/^\d+$/).required().messages({
+        "string.pattern.base": "Insira somente números para o id da mensagem",
+      }),
+    }),
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+    }),
+  }),
+  changeFieldsPlanProductController
 );
 
 export { router as RouterUpdate };
