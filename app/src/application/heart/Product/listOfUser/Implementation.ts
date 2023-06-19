@@ -6,14 +6,14 @@ export class ListProductOfUserImplementation
   extends PrismaCore
   implements ListProductOfUserRepository_I
 {
-  async get(user_key: string): Promise<Omit<Product, "user_key">[]> {
+  async get(userId: number): Promise<Omit<Product, "userId">[]> {
     try {
       const datas = await this.prismaClient.products.findMany({
-        where: { user_key },
+        where: { userId },
         include: { plan: true },
       });
       return datas.map((e) => {
-        return { ...e, plans: e.plan, user_key: undefined };
+        return { ...e, plans: e.plan, userId: undefined };
       });
     } catch (error) {
       console.log(error);

@@ -15,7 +15,7 @@ export class CreateProductImplementation
         data: {
           name: props.name,
           price: props.price,
-          user_key: props.user_key,
+          userId: props.userId,
           plan: {
             create: props.plans,
           },

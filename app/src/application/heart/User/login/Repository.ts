@@ -1,7 +1,7 @@
 export interface resultInfo_I {
   full_name: string;
   password: string;
-  key: string;
+  id: number;
   due_date: Date | null;
   type: string;
 }

@@ -6,10 +6,10 @@ export class ChangeFieldsUserImplementation
   extends PrismaCore
   implements ChangeFieldsUserRepository_I
 {
-  async update(data: ChangeFieldsUserDTO_I, key: string): Promise<void> {
+  async update(data: ChangeFieldsUserDTO_I, id: number): Promise<void> {
     try {
       await this.prismaClient.users.update({
-        where: { key },
+        where: { id },
         data,
       });
     } catch (error) {

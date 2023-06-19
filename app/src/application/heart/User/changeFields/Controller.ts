@@ -7,13 +7,13 @@ export const ChangeFieldsUserController = (
   changeFieldsUserUseCase: ChangeFieldsUserUseCase
 ) => {
   const execute = async (
-    req: Request<any, any, { user_key: string }, ChangeFieldsUserDTO_I>,
+    req: Request<any, any, { userId: number }, ChangeFieldsUserDTO_I>,
     res: Response
   ): Promise<Response> => {
     try {
       const data = await changeFieldsUserUseCase.run({
         ...req.query,
-        key: req.body.user_key,
+        userId: req.body.userId,
       });
       return res.status(200).json(data);
     } catch (error: any) {

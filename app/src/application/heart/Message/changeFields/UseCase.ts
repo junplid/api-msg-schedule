@@ -6,10 +6,10 @@ export class ChangeFieldsMessageUseCase {
   constructor(private changeFieldsMessage: ChangeFieldsMessageRepository_I) {}
 
   async run({
-    user_key,
+    userId,
     ...dto
   }: ChangeFieldsMessageDTO_I & {
-    user_key: string;
+    userId: number;
     id: string;
   }): Promise<RunUseCase_I> {
     const keyUserMsg = await this.changeFieldsMessage.findMsg(Number(dto.id));
@@ -26,7 +26,7 @@ export class ChangeFieldsMessageUseCase {
       };
     }
 
-    if (keyUserMsg !== user_key) {
+    if (keyUserMsg !== userId) {
       throw {
         message: "Só é possível editar as mensagens que você criou.",
         statusCode: 400,

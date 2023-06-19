@@ -9,28 +9,28 @@ export const VerifyTokenMiddleware = async (
   const { token } = req.params;
 
   try {
-    const key_root = await decodeToken(
+    const userId_root = await decodeToken(
       token,
       String(process.env.SECRET_TOKEN_API_ROOT)
     )
-      .then((e) => e.key)
+      .then((e) => e.id)
       .catch(() => null);
 
-    const key_user = await decodeToken(
+    const userId_user = await decodeToken(
       token,
       String(process.env.SECRET_TOKEN_API_USER)
     )
-      .then((e) => e.key)
+      .then((e) => e.id)
       .catch(() => null);
 
-    if (!key_root && !key_user) {
+    if (!userId_root && !userId_user) {
       return res.status(401).json({
         message: "Não autorizado.",
       });
     }
 
     const userExist = await new PrismaClient().users.findUnique({
-      where: { key: (key_root ?? key_user) as string },
+      where: { id: (userId_root ?? userId_user) as number },
       select: { full_name: true, type: true },
     });
 
@@ -41,7 +41,7 @@ export const VerifyTokenMiddleware = async (
     }
     return res.status(200).json({
       message: "Ok",
-      data: { ...userExist, key: key_root ?? key_user },
+      data: { ...userExist, key: userId_root ?? userId_user },
     });
   } catch (error: any) {
     return res.status(401).json({

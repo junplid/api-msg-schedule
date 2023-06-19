@@ -11,11 +11,11 @@ router.delete(
       id: Joi.string().required(),
     }),
     body: Joi.object({
-      user_key: Joi.string().max(55).required().messages({
-        "string.empty": "Campo obrigatório",
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
         "any.required": "Campo obrigatório",
-        "string.base": "Este campo precisa ser uma string",
-        "string.max": "O e-mail precisa ter no máximo 55 caracteres",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
       }),
     }),
   }),

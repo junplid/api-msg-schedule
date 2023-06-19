@@ -7,15 +7,15 @@ export class ChangeFieldsUserUseCase {
   constructor(private changeFieldsUser: ChangeFieldsUserRepository_I) {}
 
   async run({
-    key,
+    userId,
     ...dto
-  }: ChangeFieldsUserDTO_I & { key: string }): Promise<RunUseCase_I> {
+  }: ChangeFieldsUserDTO_I & { userId: number }): Promise<RunUseCase_I> {
     const newobj = {
       ...dto,
       ...(dto.password && { password: await generatePassword(dto.password) }),
     };
 
-    await this.changeFieldsUser.update(newobj, key);
+    await this.changeFieldsUser.update(newobj, userId);
     return { message: "OK" };
   }
 }

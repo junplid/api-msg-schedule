@@ -6,12 +6,12 @@ export class ListMessageOfUserImplementation
   extends PrismaCore
   implements ListMessageOfUserRepository_I
 {
-  async get(user_key: string): Promise<Omit<Message_I, "user_key">[]> {
+  async get(userId: number): Promise<Omit<Message_I, "userId">[]> {
     try {
       const datas = await this.prismaClient.messages.findMany({
         select: { days: true, id: true, text: true },
         where: {
-          user_key,
+          userId,
         },
       });
       return datas;

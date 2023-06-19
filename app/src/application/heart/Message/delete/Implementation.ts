@@ -18,13 +18,13 @@ export class DellMessageOfUserImplementation
       throw new Error("Erro dataBase.");
     }
   }
-  async findMsg(id: number): Promise<string | null> {
+  async findMsg(id: number): Promise<number | null> {
     try {
       const data = await this.prismaClient.messages.findUnique({
         where: { id },
-        select: { user_key: true },
+        select: { userId: true },
       });
-      return data?.user_key ?? null;
+      return data?.userId ?? null;
     } catch (error) {
       console.log(error);
       throw new Error("Erro dataBase.");

@@ -38,7 +38,7 @@ export class LoginUseCase {
     }
 
     const token = await createToken(
-      { key: data.key },
+      { id: data.id },
       process.env[`SECRET_TOKEN_API_${data.type.toUpperCase()}`] as string
     );
 
@@ -48,7 +48,7 @@ export class LoginUseCase {
         token,
         full_name: data.full_name,
         type: data.type,
-        key: data.key,
+        id: data.id,
       },
     };
   }

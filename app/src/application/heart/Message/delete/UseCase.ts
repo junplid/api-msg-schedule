@@ -6,7 +6,8 @@ export class DellMessageOfUserUseCase {
   constructor(private dellMessageOfUser: DellMessageOfUserRepository_I) {}
 
   async run(
-    dto: DellMessageOfUserDTO_I & { user_key: string }
+    dto: DellMessageOfUserDTO_I,
+    userId: number
   ): Promise<RunUseCase_I> {
     const keyUserMsg = await this.dellMessageOfUser.findMsg(Number(dto.id));
 
@@ -22,7 +23,7 @@ export class DellMessageOfUserUseCase {
       };
     }
 
-    if (keyUserMsg !== dto.user_key) {
+    if (keyUserMsg !== userId) {
       throw {
         message: "Só é possível excluir as mensagens que você criou.",
         statusCode: 400,

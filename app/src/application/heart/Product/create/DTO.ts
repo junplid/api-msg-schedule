@@ -5,5 +5,5 @@ export interface CreateProductDTO_I {
     name: string;
     price: number;
   }[];
-  readonly user_key: string;
+  readonly userId: number;
 }

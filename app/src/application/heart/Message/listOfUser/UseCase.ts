@@ -6,7 +6,7 @@ export class ListMessageOfUserUseCase {
   constructor(private listMessageOfUser: ListMessageOfUserRepository_I) {}
 
   async run(dto: ListMessageOfUserDTO_I): Promise<RunUseCase_I> {
-    const data = await this.listMessageOfUser.get(dto.user_key);
+    const data = await this.listMessageOfUser.get(dto.userId);
 
     return {
       message: "OK",

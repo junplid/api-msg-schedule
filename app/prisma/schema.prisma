@@ -8,8 +8,7 @@ datasource db {
 }
 
 model users {
-  id          Int       @id @unique @default(autoincrement())
-  key         String    @unique @db.VarChar(50)
+  id          Int       @id @default(autoincrement())
   full_name   String    @db.VarChar(200)
   whatsapp    String    @unique @db.VarChar(15)
   email       String    @unique @db.VarChar(200)
@@ -28,29 +27,41 @@ model messages {
   id        Int     @id @default(autoincrement())
   text      String
   days      Int
-  user_key  String  @db.VarChar(50)
-  user      users   @relation(fields: [user_key], references: [key], onDelete: Cascade, onUpdate: Cascade)
+  user      users   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId    Int
 }
 
 model products {
-  id        Int     @unique @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   name      String
   price     Decimal @db.Decimal(5,2)
-  user_key  String  @db.VarChar(50)
-  user      users   @relation(fields: [user_key], references: [key], onDelete: Cascade, onUpdate: Cascade)
+  userId    Int
+  user      users   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   plan      plans[]
 
-  @@id([id, user_key])
-  @@index([user_key])
+  @@index([userId])
 }
 
 model plans {
   id          Int       @id @default(autoincrement())
   name        String
   price       Decimal   @db.Decimal(5,2)
-  product_id  Int 
-  product     products  @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  productId   Int 
+  product     products  @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  @@index([product_id])
+  @@index([productId])
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -15,6 +15,14 @@ router.put(
       ),
       password: Joi.string().min(6),
     }),
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+    }),
   }),
   changeFieldsUserController
 );
@@ -36,11 +44,11 @@ router.put(
       }),
     }),
     body: Joi.object({
-      user_key: Joi.string().max(55).required().messages({
-        "string.empty": "Campo obrigatório",
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
         "any.required": "Campo obrigatório",
-        "string.base": "Este campo precisa ser uma string",
-        "string.max": "O e-mail precisa ter no máximo 55 caracteres",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
       }),
     }),
   }),

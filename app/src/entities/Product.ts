@@ -4,7 +4,7 @@ export interface Plans {
   readonly id: number;
   name: string;
   price: number | Decimal;
-  readonly product_id: number;
+  readonly productId: number;
 }
 
 export interface Product<IPlans = Plans[]> {
@@ -12,5 +12,5 @@ export interface Product<IPlans = Plans[]> {
   name: string;
   price: number | Decimal;
   plans: IPlans;
-  readonly user_key: string;
+  readonly userId: number;
 }

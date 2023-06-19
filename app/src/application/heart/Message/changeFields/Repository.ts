@@ -8,5 +8,5 @@ interface propsDataUpdate_I {
 
 export interface ChangeFieldsMessageRepository_I {
   update(data: propsDataUpdate_I): Promise<void>;
-  findMsg(id: number): Promise<string | null>;
+  findMsg(id: number): Promise<number | null>;
 }

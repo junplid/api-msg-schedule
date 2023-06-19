@@ -1,7 +1,7 @@
 import { sign, verify } from "jsonwebtoken";
 
 interface TokenProps {
-  key: string;
+  id: number;
 }
 
 export const createToken = async (

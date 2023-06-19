@@ -13,7 +13,7 @@ export const ChangeFieldsMessageController = (
     req: Request<
       ChangeFieldsMessageDTO_I_Params,
       any,
-      { user_key: string },
+      { userId: number },
       ChangeFieldsMessageDTO_I
     >,
     res: Response
@@ -21,7 +21,7 @@ export const ChangeFieldsMessageController = (
     try {
       const data = await changeFieldsMessageUseCase.run({
         ...req.query,
-        user_key: req.body.user_key,
+        userId: req.body.userId,
         id: req.params.id,
       });
       return res.status(200).json(data);

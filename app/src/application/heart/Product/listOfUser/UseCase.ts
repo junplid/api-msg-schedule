@@ -6,7 +6,7 @@ export class ListProductOfUserUseCase {
   constructor(private listProductOfUser: ListProductOfUserRepository_I) {}
 
   async run(dto: ListProductOfUserDTO_I): Promise<RunUseCase_I> {
-    const data = await this.listProductOfUser.get(dto.user_key);
+    const data = await this.listProductOfUser.get(Number(dto.userId));
 
     const newData = data.map((prd) => {
       return {
