@@ -29,6 +29,7 @@ model messages {
   days      Int
   user      users   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId    Int
+  customer  messagesOnCustomer[]
 }
 
 model products {
@@ -38,8 +39,18 @@ model products {
   userId    Int
   user      users   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   plan      plans[]
+  custormer   customers?
 
   @@index([userId])
+}
+
+model messagesOnCustomer {
+  message messages @relation(fields: [messageId], references: [id])
+  messageId Int
+  customer customers @relation(fields: [customerId], references: [id])
+  customerId Int
+
+  @@id([messageId, customerId])
 }
 
 model plans {
@@ -63,7 +74,13 @@ model customers {
   dueDate     DateTime
   comments    String
   planId      Int       @unique
+  productId   Int       @unique
+  messageId   Int       @unique
   plan        plans     @relation(fields: [planId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  product     products  @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  message     messagesOnCustomer[]
+
+  @@index([productId, planId])
 }
 
 

@@ -1,7 +1,7 @@
 {
   "name": "api-junplid",
   "version": "1.0.0",
-  "main": "./dist/infrastructure/express/index.js",
+  "main": "./dist/server/index.js",
   "license": "Apache",
   "dependencies": {
     "@prisma/client": "4.14.0",
