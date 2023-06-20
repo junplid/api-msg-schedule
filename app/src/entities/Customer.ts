@@ -6,11 +6,16 @@ export interface Customer {
   whatsapp: string;
   login: string;
   password: string;
-  invoice: Invoice_T;
+  invoice: Invoice_T | string | null;
   dueDate: Date;
   comments: string;
   readonly planId: number;
   readonly userId: number;
   readonly productId: number;
-  readonly messageId: number;
+  message: {
+    message: {
+      days: number;
+      id: number;
+    };
+  }[];
 }
