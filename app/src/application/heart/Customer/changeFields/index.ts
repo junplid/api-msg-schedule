@@ -1,11 +1,12 @@
-import { CreateCustomerImplementation } from "./Implementation";
-import { CreateCustomerController } from "./Controller";
-import { CreateCustomerUseCase } from "./UseCase";
+import { ChangeCustomerFieldsImplementation } from "./Implementation";
+import { ChangeCustomerFieldsController } from "./Controller";
+import { ChangeCustomerFieldsUseCase } from "./UseCase";
 
-const createCustomerImplementation = new CreateCustomerImplementation();
-const createCustomerUseCase = new CreateCustomerUseCase(
-  createCustomerImplementation
+const changeCustomerFieldsImplementation =
+  new ChangeCustomerFieldsImplementation();
+const changeCustomerFieldsUseCase = new ChangeCustomerFieldsUseCase(
+  changeCustomerFieldsImplementation
 );
-export const createCustomerController = CreateCustomerController(
-  createCustomerUseCase
+export const changeCustomerFieldsController = ChangeCustomerFieldsController(
+  changeCustomerFieldsUseCase
 ).execute;

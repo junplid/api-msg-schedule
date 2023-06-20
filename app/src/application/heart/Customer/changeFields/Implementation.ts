@@ -1,17 +1,29 @@
-import { CreateCustomerRepository_I, propsCreateCData_I } from "./Repository";
+import { ChangeCustomerFieldsRepository_I, propsUpdate_I } from "./Repository";
 import { PrismaCore } from "../../../implementations/core";
 
-export class CreateCustomerImplementation
+export class ChangeCustomerFieldsImplementation
   extends PrismaCore
-  implements CreateCustomerRepository_I
+  implements ChangeCustomerFieldsRepository_I
 {
-  async create(props: propsCreateCData_I): Promise<number> {
+  async update({ id, ...props }: propsUpdate_I): Promise<void> {
     try {
-      const data = await this.prismaClient.customers.create({
+      await this.prismaClient.customers.update({
+        where: { id },
         data: props,
-        select: { id: true },
       });
-      return data.id;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Erro dataBase.");
+    }
+  }
+
+  async findCust(id: number): Promise<number | null> {
+    try {
+      const data = await this.prismaClient.customers.findUnique({
+        where: { id },
+        select: { userId: true },
+      });
+      return data?.userId ?? null;
     } catch (error) {
       console.log(error);
       throw new Error("Erro dataBase.");

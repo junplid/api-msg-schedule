@@ -1,17 +1,27 @@
 import { Request, Response } from "express";
-import { CreateCustomerDTO_I } from "./DTO";
-import { CreateCustomerUseCase } from "./UseCase";
+import {
+  ChangeCustomerFieldsDTO_I,
+  ChangeCustomerFieldsDTO_I_Params,
+} from "./DTO";
+import { ChangeCustomerFieldsUseCase } from "./UseCase";
 import { ValidationError } from "express-validation";
 
-export const CreateCustomerController = (
-  createCustomerUseCase: CreateCustomerUseCase
+export const ChangeCustomerFieldsController = (
+  changeCustomerFieldsUseCase: ChangeCustomerFieldsUseCase
 ) => {
   const execute = async (
-    req: Request<any, any, CreateCustomerDTO_I>,
+    req: Request<
+      ChangeCustomerFieldsDTO_I_Params,
+      any,
+      ChangeCustomerFieldsDTO_I
+    >,
     res: Response
   ): Promise<Response> => {
     try {
-      const data = await createCustomerUseCase.run(req.body);
+      const data = await changeCustomerFieldsUseCase.run({
+        ...req.body,
+        ...req.params,
+      });
       return res.status(201).json(data);
     } catch (error: any) {
       if (error instanceof ValidationError) {

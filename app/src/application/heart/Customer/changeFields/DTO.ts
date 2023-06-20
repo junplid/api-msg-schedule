@@ -1,6 +1,7 @@
+import { ParamsDictionary } from "express-serve-static-core";
 type Invoice_T = "PAY" | "PENDING";
 
-export interface CreateCustomerDTO_I {
+export interface ChangeCustomerFieldsDTO_I {
   full_name: string;
   whatsapp: string;
   login: string;
@@ -10,6 +11,9 @@ export interface CreateCustomerDTO_I {
   comments: string;
   readonly planId: number;
   readonly productId: number;
-  readonly messageId: number;
   readonly userId: number;
+}
+
+export interface ChangeCustomerFieldsDTO_I_Params extends ParamsDictionary {
+  id: string;
 }
