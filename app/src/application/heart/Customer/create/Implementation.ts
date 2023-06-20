@@ -10,7 +10,7 @@ export class CreateCustomerImplementation
     messageId: number
   ): Promise<void> {
     try {
-      const data = await this.prismaClient.messagesOnCustomer.create({
+      await this.prismaClient.messagesOnCustomer.create({
         data: { customerId, messageId },
       });
     } catch (error) {

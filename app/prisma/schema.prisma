@@ -19,7 +19,7 @@ model users {
   payday      DateTime?
   due_date    DateTime?
   createAt    DateTime?
-  customer    customers?
+  customer    customers[]
   messages    messages[]
   products    products[]
 }
@@ -40,15 +40,15 @@ model products {
   userId    Int
   user      users   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   plan      plans[]
-  custormer   customers?
+  custormer   customers[]
 
   @@index([userId])
 }
 
 model messagesOnCustomer {
-  message messages @relation(fields: [messageId], references: [id])
+  message messages @relation(fields: [messageId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   messageId Int
-  customer customers @relation(fields: [customerId], references: [id])
+  customer customers @relation(fields: [customerId], references: [id],  onDelete: Cascade, onUpdate: Cascade)
   customerId Int
 
   @@id([messageId, customerId])
@@ -59,7 +59,7 @@ model plans {
   name        String
   price       Decimal   @db.Decimal(5,2)
   productId   Int 
-  custormer   customers?
+  custormer   customers[]
   product     products  @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([productId])
@@ -74,21 +74,14 @@ model customers {
   invoice     String?   @default("PENDING")
   dueDate     DateTime
   comments    String
-  planId      Int       @unique
-  productId   Int       @unique
-  userId      Int       @unique
+  planId      Int
+  productId   Int
+  userId      Int
+  message     messagesOnCustomer[]
   user        users     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   plan        plans     @relation(fields: [planId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   product     products  @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  message     messagesOnCustomer[]
-
-  @@index([productId, planId])
 }
-
-
-
-
-
 
 
 

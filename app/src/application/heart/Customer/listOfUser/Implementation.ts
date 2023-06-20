@@ -1,15 +1,16 @@
-import { ListCustomerOfUserRepository_I } from "./Repository";
+import { ListCustomerOfUserRepository_I, resultList_I } from "./Repository";
 import { PrismaCore } from "../../../implementations/core";
-import { Customer } from "../../../../entities/Customer";
 
 export class ListCustomerOfUserImplementation
   extends PrismaCore
   implements ListCustomerOfUserRepository_I
 {
-  async get(userId: number): Promise<Omit<Customer, "userId">[]> {
+  async get(userId: number): Promise<resultList_I[]> {
     try {
       const datas = await this.prismaClient.customers.findMany({
         include: {
+          product: { select: { name: true } },
+          plan: { select: { name: true } },
           message: {
             select: { message: { select: { days: true, id: true } } },
           },
