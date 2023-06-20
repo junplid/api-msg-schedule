@@ -19,6 +19,7 @@ model users {
   payday      DateTime?
   due_date    DateTime?
   createAt    DateTime?
+  customer    customers?
   messages    messages[]
   products    products[]
 }
@@ -75,7 +76,8 @@ model customers {
   comments    String
   planId      Int       @unique
   productId   Int       @unique
-  messageId   Int       @unique
+  userId      Int       @unique
+  user        users     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   plan        plans     @relation(fields: [planId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   product     products  @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   message     messagesOnCustomer[]

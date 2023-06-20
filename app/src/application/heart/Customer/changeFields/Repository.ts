@@ -1,7 +1,6 @@
 type Invoice_T = "PAY" | "PENDING";
 
-export interface Customer {
-  readonly id: number;
+export type propsCreateCData_I = {
   full_name: string;
   whatsapp: string;
   login: string;
@@ -10,7 +9,11 @@ export interface Customer {
   dueDate: Date;
   comments: string;
   readonly planId: number;
-  readonly userId: number;
   readonly productId: number;
   readonly messageId: number;
+  readonly userId: number;
+};
+
+export interface CreateCustomerRepository_I {
+  create(data: propsCreateCData_I): Promise<number>;
 }
