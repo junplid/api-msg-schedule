@@ -11,7 +11,6 @@ export const LoginController = (loginUseCase: LoginUseCase) => {
       const data = await loginUseCase.run(req.body);
       return res.status(201).json(data);
     } catch (error: any) {
-      console.log(error);
       return res.status(error.statusCode ?? 500).json(error.details ?? error);
     }
   };

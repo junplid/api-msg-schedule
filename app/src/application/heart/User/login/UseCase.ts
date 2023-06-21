@@ -49,6 +49,7 @@ export class LoginUseCase {
         full_name: data.full_name,
         type: data.type,
         id: data.id,
+        due_date: data.due_date,
       },
     };
   }

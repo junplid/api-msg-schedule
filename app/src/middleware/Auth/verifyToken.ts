@@ -31,7 +31,7 @@ export const VerifyTokenMiddleware = async (
 
     const userExist = await new PrismaClient().users.findUnique({
       where: { id: (userId_root ?? userId_user) as number },
-      select: { full_name: true, type: true },
+      select: { full_name: true, type: true, due_date: true },
     });
 
     if (!userExist) {

@@ -2,6 +2,7 @@ import { Router } from "express";
 import { Joi, validate } from "express-validation";
 import { createUserController } from "../../../../../application/heart/User/create";
 import { loginController } from "../../../../../application/heart/User/login";
+import { renewLicenseController } from "../../../../../application/heart/User/renewLicense";
 
 const router = Router();
 
@@ -69,6 +70,17 @@ router.post(
     }),
   }),
   loginController
+);
+
+router.post(
+  "/renew-license/:id/:key",
+  validate({
+    params: Joi.object({
+      id: Joi.string().regex(/^\d+$/).required(),
+      key: Joi.string().required(),
+    }),
+  }),
+  renewLicenseController
 );
 
 export { router as RouterCreate };

@@ -89,3 +89,9 @@ model customers {
   @@index([productId], map: "customers_productId_fkey")
   @@index([userId], map: "customers_userId_fkey")
 }
+
+model payments {
+  id     Int      @id @default(autoincrement())
+  price  Decimal  @db.Decimal(5, 2)
+  payday DateTime
+}

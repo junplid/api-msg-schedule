@@ -30,6 +30,19 @@ server.listen(process.env.NODE_DOCKER_PORT ?? 8080, () =>
 );
 
 const createSession = async (key: string) => {
+  const data = await new PrismaClient().users.findUnique({
+    where: { id: Number(key) },
+    select: { due_date: true, type: true },
+  });
+
+  if (!data || !data.due_date) {
+    throw new Error("Dados não encontrado");
+  }
+
+  if (data.type !== "root" && new Date(data?.due_date) < new Date()) {
+    throw new Error("Licença expirada!");
+  }
+
   const client = await create({
     session: key,
     logQR: false,
@@ -107,8 +120,53 @@ io.on("connection", async (socket) => {
       await createSession(data.key);
       socket.emit("sucess-connetion", true);
     } catch (error) {
+      console.log(error);
       socket.leave(data.key);
       socket.emit("leave", data.key);
     }
   });
 });
+
+(async () => {})();
+
+new CronJob(
+  "0 */05 * * * *",
+  async function () {
+    try {
+      const prisma = new PrismaClient();
+      const userRoot = await prisma.users.findFirst({
+        where: { type: "root" },
+        select: { id: true },
+      });
+
+      const users = await prisma.users.findMany({
+        where: {
+          due_date: { lte: new Date() },
+          NOT: {
+            type: "root",
+          },
+        },
+        select: { id: true, whatsapp: true, full_name: true },
+      });
+
+      await Promise.all(
+        users?.map(async (user) => {
+          try {
+            await storeSessions[userRoot?.id!]?.sendText(
+              `55${user.whatsapp}@c.us`,
+              `**${user.full_name}**, informamos que a sua licença para utilizar o sistema expirou, resultando na interrupção dos serviços do seu bot. Para continuar utilizando nossos serviços, renove a sua licença por mais 31 dias!`
+            );
+            return;
+          } catch (error) {
+            return;
+          }
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  null,
+  false,
+  "America/Los_Angeles"
+).start();
