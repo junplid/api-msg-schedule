@@ -7,4 +7,5 @@ app/tokens
 /redis
 .env
 /app/.env
+/app/src/sessionsStore
 /app/src/uploads_images/**/*[.jpg|.png]

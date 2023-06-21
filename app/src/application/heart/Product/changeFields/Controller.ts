@@ -27,7 +27,7 @@ export const ChangeFieldsProductController = (
       return res.status(200).json(data);
     } catch (error: any) {
       if (error instanceof ValidationError) {
-        return res.status(error.statusCode).json(error.details);
+        return res.status(error.statusCode ?? 500).json(error.details ?? error);
       }
       return res.status(500).json(error);
     }

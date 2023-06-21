@@ -3,6 +3,7 @@ import { createMessageController } from "../../../../../application/heart/Messag
 import { Joi, validate } from "express-validation";
 import { createProductController } from "../../../../../application/heart/Product/create";
 import { createCustomerController } from "../../../../../application/heart/Customer/create";
+import { sendMessageCustomerController } from "../../../../../application/heart/Customer/sendMessage";
 
 const router = Router();
 
@@ -29,6 +30,39 @@ router.post(
     }),
   }),
   createMessageController
+);
+
+// marcou como pago então salva na tebela de financeiro os pagamentos
+// os pendentes
+// o valor
+// e etc.
+
+// liga o cliente
+
+// enviar menssagem para o cliente
+router.post(
+  "/send-message",
+  validate({
+    body: Joi.object({
+      text: Joi.string().required().messages({
+        "string.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "string.base": "Este campo precisa ser uma string",
+      }),
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+      id: Joi.number().min(0).required().messages({
+        "any.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.min": "Este campo precisar ser maior ou igual a 0",
+      }),
+    }),
+  }),
+  sendMessageCustomerController
 );
 
 router.post(

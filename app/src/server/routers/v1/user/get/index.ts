@@ -5,6 +5,7 @@ import { listProductOfUserController } from "../../../../../application/heart/Pr
 import { listCustomerOfUserController } from "../../../../../application/heart/Customer/listOfUser";
 import { listPlansOfPdrController } from "../../../../../application/heart/Product/listPlansOfPdr";
 import { listOnlyProductOfUserController } from "../../../../../application/heart/Product/listOnlyPdrUser";
+import { getStateSessionWhatsappController } from "../../../../../application/heart/User/getStateSessionWhatsapp";
 
 const router = Router();
 
@@ -86,6 +87,21 @@ router.get(
     }),
   }),
   listOnlyProductOfUserController
+);
+
+router.get(
+  "/state-session-whatsapp",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+    }),
+  }),
+  getStateSessionWhatsappController
 );
 
 export { router as RouterGet };

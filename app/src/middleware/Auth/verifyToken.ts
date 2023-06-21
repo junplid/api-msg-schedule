@@ -41,7 +41,7 @@ export const VerifyTokenMiddleware = async (
     }
     return res.status(200).json({
       message: "Ok",
-      data: { ...userExist, key: userId_root ?? userId_user },
+      data: { ...userExist, id: userId_root ?? userId_user },
     });
   } catch (error: any) {
     return res.status(401).json({

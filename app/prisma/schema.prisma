@@ -8,85 +8,84 @@ datasource db {
 }
 
 model users {
-  id          Int       @id @default(autoincrement())
-  full_name   String    @db.VarChar(200)
-  whatsapp    String    @unique @db.VarChar(15)
-  email       String    @unique @db.VarChar(200)
-  password    String    @db.VarChar(150)
-  type        String    @db.VarChar(5)
-  code        String?   @db.VarChar(5)
-  available   Int?      @default(0)
-  payday      DateTime?
-  due_date    DateTime?
-  createAt    DateTime?
-  customer    customers[]
-  messages    messages[]
-  products    products[]
+  id        Int         @id @default(autoincrement())
+  full_name String      @db.VarChar(200)
+  whatsapp  String      @unique @db.VarChar(15)
+  email     String      @unique @db.VarChar(200)
+  password  String      @db.VarChar(150)
+  type      String      @db.VarChar(5)
+  code      String?     @db.VarChar(5)
+  available Int?        @default(0)
+  payday    DateTime?
+  due_date  DateTime?
+  createAt  DateTime?
+  customer  customers[]
+  messages  messages[]
+  products  products[]
 }
 
 model messages {
-  id        Int     @id @default(autoincrement())
-  text      String
-  days      Int
-  user      users   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId    Int
-  customer  messagesOnCustomer[]
+  id       Int                  @id @default(autoincrement())
+  text     String
+  days     Int
+  userId   Int
+  user     users                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  customer messagesOnCustomer[]
+
+  @@index([userId], map: "messages_userId_fkey")
 }
 
 model products {
-  id        Int     @id @default(autoincrement())
+  id        Int         @id @default(autoincrement())
   name      String
-  price     Decimal @db.Decimal(5,2)
+  price     Decimal     @db.Decimal(5, 2)
   userId    Int
-  user      users   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  custormer customers[]
   plan      plans[]
-  custormer   customers[]
+  user      users       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
 
 model messagesOnCustomer {
-  message messages @relation(fields: [messageId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  messageId Int
-  customer customers @relation(fields: [customerId], references: [id],  onDelete: Cascade, onUpdate: Cascade)
+  messageId  Int
   customerId Int
+  customer   customers @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  message    messages  @relation(fields: [messageId], references: [id], onDelete: Cascade)
 
   @@id([messageId, customerId])
+  @@index([customerId], map: "messagesOnCustomer_customerId_fkey")
 }
 
 model plans {
-  id          Int       @id @default(autoincrement())
-  name        String
-  price       Decimal   @db.Decimal(5,2)
-  productId   Int 
-  custormer   customers[]
-  product     products  @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id        Int         @id @default(autoincrement())
+  name      String
+  price     Decimal     @db.Decimal(5, 2)
+  productId Int
+  custormer customers[]
+  product   products    @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@index([productId])
 }
 
 model customers {
-  id          Int       @id @default(autoincrement())
-  full_name   String
-  whatsapp    String    @db.VarChar(15)
-  login       String    @unique
-  password    String
-  invoice     String?   @default("PENDING")
-  dueDate     DateTime
-  comments    String
-  planId      Int
-  productId   Int
-  userId      Int
-  message     messagesOnCustomer[]
-  user        users     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  plan        plans     @relation(fields: [planId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  product     products  @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id        Int                  @id @default(autoincrement())
+  full_name String
+  whatsapp  String               @db.VarChar(15)
+  login     String               @unique
+  password  String
+  invoice   String?              @default("PENDING")
+  dueDate   DateTime
+  comments  String
+  planId    Int
+  productId Int
+  userId    Int
+  plan      plans                @relation(fields: [planId], references: [id], onDelete: Cascade)
+  product   products             @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      users                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  message   messagesOnCustomer[]
+
+  @@index([planId], map: "customers_planId_fkey")
+  @@index([productId], map: "customers_productId_fkey")
+  @@index([userId], map: "customers_userId_fkey")
 }
-
-
-
-
-
-
-
-

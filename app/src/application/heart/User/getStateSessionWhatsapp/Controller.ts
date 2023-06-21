@@ -1,21 +1,18 @@
 import { Request, Response } from "express";
-import { DellMessageOfUserDTO_I } from "./DTO";
-import { DellMessageOfUserUseCase } from "./UseCase";
+import { GetStateSessionWhatsappDTO_I } from "./DTO";
+import { GetStateSessionWhatsappUseCase } from "./UseCase";
 import { ValidationError } from "express-validation";
 
-export const DellMessageOfUserController = (
-  dellMessageOfUserUseCase: DellMessageOfUserUseCase
+export const GetStateSessionWhatsappController = (
+  getStateSessionWhatsappUseCase: GetStateSessionWhatsappUseCase
 ) => {
   const execute = async (
-    req: Request<DellMessageOfUserDTO_I, any, { userId: number }>,
+    req: Request<any, any, GetStateSessionWhatsappDTO_I>,
     res: Response
   ): Promise<Response> => {
     try {
-      const data = await dellMessageOfUserUseCase.run(
-        { id: req.params.id },
-        req.body.userId
-      );
-      return res.status(200).json(data);
+      const data = await getStateSessionWhatsappUseCase.run(req.body);
+      return res.status(201).json(data);
     } catch (error: any) {
       if (error instanceof ValidationError) {
         return res.status(error.statusCode ?? 500).json(error.details ?? error);

@@ -1,44 +1,14 @@
 import { config } from "dotenv";
 import { App } from "./app";
-import { Whatsapp, create } from "venom-bot";
+import { create } from "venom-bot";
 import { ValidationError } from "express-validation";
 import http from "http";
-import { Server, Socket } from "socket.io";
-import { imageSync } from "qr-image";
-import { writeFileSync } from "fs";
-import { dirname, resolve } from "path";
+import { Server } from "socket.io";
 import { storeSessions } from "../sessionsStore";
+import { PrismaClient } from "@prisma/client";
+import { CronJob } from "cron";
 
 config();
-
-// create({
-//   session: "rian",
-//   disableWelcome: true,
-// })
-//   .then(async (client) => {
-//     console.log("1");
-//     await client
-//       .sendText("5571986751101@c.us", "A plataforma iniciou!")
-//       .then()
-//       .catch((erro) => {
-//         console.error("Error when sending: ", erro); //return object error
-//       });
-//     client.onMessage(async (message) => {
-//       console.log("2");
-//       if (message.body === "Hi" && message.isGroupMsg === false) {
-//         console.log("3");
-//         await client
-//           .sendText(message.from, "Welcome Venom 🕷")
-//           .then((result) => {
-//             console.log("Result: ", result); //return object success
-//           })
-//           .catch((erro) => {
-//             console.error("Error when sending: ", erro); //return object error
-//           });
-//       }
-//     });
-//   })
-//   .catch((err) => console.log(err));
 
 App.use(function (err, req, res, next) {
   if (err instanceof ValidationError) {
@@ -64,22 +34,68 @@ const createSession = async (key: string) => {
     session: key,
     logQR: false,
     disableWelcome: true,
+    debug: false,
     catchQR: (qrCode) => {
       io.to(key).emit(key, qrCode);
     },
-  }).then((client) => {
-    client.onMessage(async (message) => {
-      if (message.body === "Hi" && message.isGroupMsg === false) {
-        await client
-          .sendText(message.from, `"Welcome Venom 🕷"`)
-          .then((result) => {
-            console.log("Result: ", result); //return object success
-          })
-          .catch((erro) => {
-            console.error("Error when sending: ", erro); //return object error
+  }).then(async (client) => {
+    new CronJob(
+      "0 */51 * * * *",
+      async function () {
+        const customer = await new PrismaClient().customers.findMany({
+          where: { userId: Number(key) },
+          select: {
+            dueDate: true,
+            full_name: true,
+            invoice: true,
+            login: true,
+            id: true,
+            comments: true,
+            plan: { select: { name: true } },
+            product: { select: { name: true } },
+            message: {
+              include: {
+                message: true,
+              },
+            },
+            password: true,
+            whatsapp: true,
+          },
+        });
+        const dataDeNotificacao = new Date();
+
+        customer?.forEach((cust) => {
+          cust?.message?.forEach((msg) => {
+            dataDeNotificacao.setDate(
+              dataDeNotificacao.getDate() - msg.message.days
+            );
+
+            if (new Date(cust.dueDate) < dataDeNotificacao) {
+              client.sendText(
+                `55${cust.whatsapp}@c.us`,
+                `${msg.message.text
+                  .replace(/\{NOME\}/, cust.full_name)
+                  .replace(/\{PRIMEIRO_NOME\}/, cust.full_name.split(" ")[0])
+                  .replace(/\{ZAP\}/, cust.whatsapp)
+                  .replace(/\{LOGIN\}/, cust.login)
+                  .replace(/\{SENHA\}/, cust.password)
+                  .replace(/\{PLANO\}/, cust.plan.name)
+                  .replace(/\{PRODUTO\}/, cust.product.name)
+                  .replace(/\{OBS\}/, cust.comments)
+                  .replace(
+                    /\{DATA_VENCI\}/,
+                    new Date(cust.dueDate).toLocaleDateString("pt-br")
+                  )}`
+              );
+            }
           });
-      }
-    });
+        });
+      },
+      null,
+      false,
+      "America/Los_Angeles"
+    ).start();
+    return client;
   });
   Object.assign(storeSessions, { [key]: client });
 };
