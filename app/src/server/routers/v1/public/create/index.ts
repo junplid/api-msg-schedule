@@ -3,6 +3,7 @@ import { Joi, validate } from "express-validation";
 import { createUserController } from "../../../../../application/heart/User/create";
 import { loginController } from "../../../../../application/heart/User/login";
 import { renewLicenseController } from "../../../../../application/heart/User/renewLicense";
+import { sendCodeWhatsappChangePasswordController } from "../../../../../application/heart/User/sendCodeWhatsappChangePassword";
 
 const router = Router();
 
@@ -81,6 +82,16 @@ router.post(
     }),
   }),
   renewLicenseController
+);
+
+router.post(
+  "/send-code-whatsapp-change-password",
+  validate({
+    body: Joi.object({
+      whatsapp: Joi.string().regex(/^\d+$/).required(),
+    }),
+  }),
+  sendCodeWhatsappChangePasswordController
 );
 
 export { router as RouterCreate };
