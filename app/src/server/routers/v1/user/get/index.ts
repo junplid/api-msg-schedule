@@ -6,11 +6,27 @@ import { listCustomerOfUserController } from "../../../../../application/heart/C
 import { listPlansOfPdrController } from "../../../../../application/heart/Product/listPlansOfPdr";
 import { listOnlyProductOfUserController } from "../../../../../application/heart/Product/listOnlyPdrUser";
 import { getStateSessionWhatsappController } from "../../../../../application/heart/User/getStateSessionWhatsapp";
+import { infoUserController } from "../../../../../application/heart/User/info";
 
 const router = Router();
 
 router.get(
   "/messages",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+    }),
+  }),
+  listMessageOfUserController
+);
+
+router.get(
+  "/info",
   validate({
     body: Joi.object({
       userId: Joi.number().min(0).required().messages({
@@ -37,6 +53,21 @@ router.get(
     }),
   }),
   listProductOfUserController
+);
+
+router.get(
+  "/info-user",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+    }),
+  }),
+  infoUserController
 );
 
 router.get(
