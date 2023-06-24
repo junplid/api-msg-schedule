@@ -133,7 +133,7 @@ io.on("connection", async (socket) => {
 });
 
 new CronJob(
-  "0 0 8 * * *",
+  "0 0 22 * * *",
   async function () {
     try {
       const prisma = new PrismaClient();

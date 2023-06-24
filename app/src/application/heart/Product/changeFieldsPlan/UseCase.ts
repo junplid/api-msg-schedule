@@ -12,25 +12,13 @@ export class ChangeFieldsPlanProductUseCase {
     ...dto
   }: ChangeFieldsPlanProductDTO_I & {
     userId: number;
-    id: string;
+    productId: string;
   }): Promise<RunUseCase_I> {
-    const dataInfo = await this.changeFieldsPlanProduct.findPlan(
-      Number(dto.id)
+    const dataInfo = await this.changeFieldsPlanProduct.productExist(
+      Number(dto.productId)
     );
 
-    if (!dataInfo) {
-      throw {
-        message: "Mensagem não encontrada.",
-        statusCode: 400,
-        details: {
-          body: [{ message: "Mensagem não encontrada." }],
-        },
-        error: "Mensagem não encontrada.",
-        name: "not found",
-      };
-    }
-
-    if (dataInfo.userId !== userId) {
+    if (dataInfo && dataInfo.userId !== userId) {
       throw {
         message: "Só é possível editar as mensagens que você criou.",
         statusCode: 400,
@@ -44,13 +32,13 @@ export class ChangeFieldsPlanProductUseCase {
       };
     }
 
-    await this.changeFieldsPlanProduct.update({
-      id: Number(dto.id),
+    const id = await this.changeFieldsPlanProduct.update({
+      idPlan: dto.idPlan ? Number(dto.idPlan) : undefined,
       ...(dto.price && { price: Number(dto.price) }),
       ...(dto.name && { name: dto.name }),
-      productId: dataInfo.productId,
+      productId: Number(dto.productId),
     });
 
-    return { message: "OK" };
+    return { message: "OK", data: id };
   }
 }

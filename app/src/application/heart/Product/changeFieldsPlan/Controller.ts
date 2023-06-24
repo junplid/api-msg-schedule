@@ -22,7 +22,7 @@ export const ChangeFieldsPlanProductController = (
       const data = await changeFieldsPlanProductUseCase.run({
         ...req.query,
         userId: req.body.userId,
-        id: req.params.id,
+        productId: req.params.productId,
       });
       return res.status(200).json(data);
     } catch (error: any) {

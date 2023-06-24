@@ -87,7 +87,7 @@ router.put(
 );
 
 router.put(
-  "/change-field-plan-product/:id",
+  "/change-field-plan-product/:productId",
   validate({
     query: Joi.object({
       name: Joi.string().messages({
@@ -96,11 +96,12 @@ router.put(
       price: Joi.number(),
     }),
     params: Joi.object({
-      id: Joi.string().regex(/^\d+$/).required().messages({
+      productId: Joi.string().regex(/^\d+$/).required().messages({
         "string.pattern.base": "Insira somente números para o id da mensagem",
       }),
     }),
     body: Joi.object({
+      idPlan: Joi.number().min(0),
       userId: Joi.number().min(0).required().messages({
         "number.empty": "Campo obrigatório",
         "any.required": "Campo obrigatório",

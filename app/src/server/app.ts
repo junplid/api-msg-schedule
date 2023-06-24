@@ -6,7 +6,7 @@ import { resolve } from "path";
 const app = express();
 
 app.use(express.json());
-app.use(cors({ origin: "*", credentials: false }));
+app.use(cors({ origin: "*" }));
 app.use("/v1", router);
 
 export { app as App };
