@@ -4,6 +4,7 @@ import { createUserController } from "../../../../../application/heart/User/crea
 import { loginController } from "../../../../../application/heart/User/login";
 import { renewLicenseController } from "../../../../../application/heart/User/renewLicense";
 import { sendCodeWhatsappChangePasswordController } from "../../../../../application/heart/User/sendCodeWhatsappChangePassword";
+import { confirmCodeController } from "../../../../../application/heart/User/confirmCode";
 
 const router = Router();
 
@@ -92,6 +93,25 @@ router.post(
     }),
   }),
   sendCodeWhatsappChangePasswordController
+);
+
+router.post(
+  "/confim-code",
+  validate({
+    body: Joi.object({
+      whatsapp: Joi.string().regex(/^\d+$/).required().messages({
+        "string.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "string.base": "Este campo precisa ser uma string",
+      }),
+      code: Joi.string().required().messages({
+        "any.required": "Campo obrigatório",
+        "string.empty": "Campo obrigatório",
+        "string.base": "A senha precisa se uma string",
+      }),
+    }),
+  }),
+  confirmCodeController
 );
 
 export { router as RouterCreate };

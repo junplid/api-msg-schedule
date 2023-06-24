@@ -113,17 +113,6 @@ router.put(
 router.put(
   "/change-field-customer/:id",
   validate({
-    query: Joi.object({
-      full_name: Joi.string(),
-      whatsapp: Joi.string(),
-      login: Joi.string(),
-      password: Joi.string(),
-      invoice: Joi.string(),
-      dueDate: Joi.date(),
-      comments: Joi.string(),
-      planId: Joi.string(),
-      productId: Joi.string(),
-    }),
     params: Joi.object({
       id: Joi.string().regex(/^\d+$/).required().messages({
         "string.pattern.base": "Insira somente números para o id da mensagem",
@@ -136,6 +125,16 @@ router.put(
         "number.base": "Este campo precisa ser do tipo número",
         "number.min": "Precisa ter no mínimo 0",
       }),
+      full_name: Joi.string(),
+      whatsapp: Joi.string(),
+      login: Joi.string(),
+      password: Joi.string(),
+      invoice: Joi.string(),
+      dueDate: Joi.date(),
+      comments: Joi.string(),
+      planId: Joi.number(),
+      productId: Joi.number(),
+      messageId: Joi.array(),
     }),
   }),
   changeCustomerFieldsController

@@ -127,10 +127,8 @@ io.on("connection", async (socket) => {
   });
 });
 
-(async () => {})();
-
 new CronJob(
-  "0 */05 * * * *",
+  "0 0 8 * * *",
   async function () {
     try {
       const prisma = new PrismaClient();

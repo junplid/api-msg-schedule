@@ -11,9 +11,12 @@ export type propsUpdate_I = {
   comments?: string;
   readonly planId?: number;
   readonly productId?: number;
+  readonly messageId?: number[];
 };
 
 export interface ChangeCustomerFieldsRepository_I {
   update({ id, ...props }: propsUpdate_I): Promise<void>;
+  deleteAllMsg(id: number): Promise<void>;
+  createCustomerMessage(customerId: number, messageId: number): Promise<void>;
   findCust(id: number): Promise<number | null>;
 }

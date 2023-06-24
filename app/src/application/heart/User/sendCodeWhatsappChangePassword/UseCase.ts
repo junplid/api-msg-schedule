@@ -16,7 +16,7 @@ export class SendCodeWhatsappChangePasswordUseCase {
     if (!whatsappExist) {
       throw {
         message: "WhatsApp não cadastrado.",
-        statusCode: 422,
+        statusCode: 400,
         details: {
           body: [
             {
@@ -39,7 +39,7 @@ export class SendCodeWhatsappChangePasswordUseCase {
     if (!infoRoot) {
       throw {
         message: "O servidor está indisponível.",
-        statusCode: 422,
+        statusCode: 400,
         details: {
           body: [
             {
@@ -74,7 +74,7 @@ export class SendCodeWhatsappChangePasswordUseCase {
     throw {
       message:
         "Error ao tentar enviar mensagem, verifique se o número está correto!",
-      statusCode: 422,
+      statusCode: 400,
       details: {
         body: [
           {

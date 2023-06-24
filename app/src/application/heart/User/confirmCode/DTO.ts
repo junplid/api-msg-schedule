@@ -1,3 +1,4 @@
-export interface SendCodeWhatsappChangePasswordDTO_I {
+export interface ConfirmCodeDTO_I {
+  code: string;
   whatsapp: string;
 }

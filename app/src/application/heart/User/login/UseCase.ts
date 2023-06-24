@@ -31,11 +31,11 @@ export class LoginUseCase {
       };
     }
 
-    if (data.type === "user" && new Date(data.due_date!) < new Date()) {
-      return {
-        message: "Sua conta expirou. Renove sua assinatura agora mesmo!",
-      };
-    }
+    // if (data.type === "user" && new Date(data.due_date!) < new Date()) {
+    //   return {
+    //     message: "Sua conta expirou. Renove sua assinatura agora mesmo!",
+    //   };
+    // }
 
     const token = await createToken(
       { id: data.id },

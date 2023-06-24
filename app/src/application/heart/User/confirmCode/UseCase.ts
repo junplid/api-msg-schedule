@@ -1,91 +1,54 @@
-import { SendCodeWhatsappChangePasswordRepository_I } from "./Repository";
-import { SendCodeWhatsappChangePasswordDTO_I } from "./DTO";
+import { ConfirmCodeRepository_I } from "./Repository";
+import { ConfirmCodeDTO_I } from "./DTO";
 import { RunUseCase_I } from "../../../../types/global";
+import { createToken } from "../../../../common/utils/token-access";
 
-export class SendCodeWhatsappChangePasswordUseCase {
-  constructor(
-    private sendCodeWhatsappChangePassword: SendCodeWhatsappChangePasswordRepository_I
-  ) {}
+export class ConfirmCodeUseCase {
+  constructor(private confirmCode: ConfirmCodeRepository_I) {}
 
-  async run(dto: SendCodeWhatsappChangePasswordDTO_I): Promise<RunUseCase_I> {
-    const whatsappExist =
-      await this.sendCodeWhatsappChangePassword.getInfoWhatsAppUser(
-        dto.whatsapp
-      );
+  async run(dto: ConfirmCodeDTO_I): Promise<RunUseCase_I> {
+    const infoUser = await this.confirmCode.getInfoUser({
+      whatsapp: dto.whatsapp,
+    });
 
-    if (!whatsappExist) {
+    if (!infoUser || !infoUser.code) {
       throw {
-        message: "WhatsApp não cadastrado.",
-        statusCode: 422,
+        message: "Usúario não encontrado",
+        statusCode: 400,
         details: {
           body: [
             {
-              message: "WhatsApp não cadastrado.",
-              context: {
-                label: "whatsapp",
-                key: "whatsapp",
-              },
-              path: ["whatsapp"],
+              message: "Usúario não encontrado",
             },
           ],
         },
-        error: "WhatsApp não cadastrado.",
+        error: "Usúario não encontrado",
         name: "not found",
       };
     }
 
-    const infoRoot = await this.sendCodeWhatsappChangePassword.getInfoRoot();
-
-    if (!infoRoot) {
+    if (infoUser.code !== dto.code) {
       throw {
-        message: "O servidor está indisponível.",
-        statusCode: 422,
+        message: "Código incorreto.",
+        statusCode: 400,
         details: {
           body: [
             {
-              message: "O servidor está indisponível.",
+              message: "Código incorreto.",
+              path: ["code"],
             },
           ],
         },
-        error: "O servidor está indisponível.",
-        name: "error",
+        error: "Código incorreto.",
+        name: "not found",
       };
     }
 
-    const code = String(
-      Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000
+    const token = await createToken(
+      { id: infoUser.id },
+      process.env[`SECRET_TOKEN_API_${infoUser.type.toUpperCase()}`] as string
     );
-    const send = await this.sendCodeWhatsappChangePassword.sendCodeWhatsApp({
-      code,
-      rootId: infoRoot.id,
-      whatsapp: dto.whatsapp,
-    });
 
-    await this.sendCodeWhatsappChangePassword.updateCodeUser({
-      code,
-      whatsapp: dto.whatsapp,
-    });
-
-    if (send) {
-      return {
-        message: "OK",
-      };
-    }
-    throw {
-      message:
-        "Error ao tentar enviar mensagem, verifique se o número está correto!",
-      statusCode: 422,
-      details: {
-        body: [
-          {
-            message:
-              "Error ao tentar enviar mensagem, verifique se o número está correto!",
-          },
-        ],
-      },
-      error:
-        "Error ao tentar enviar mensagem, verifique se o número está correto!",
-      name: "error",
-    };
+    return { message: "OK", data: token };
   }
 }

@@ -5,11 +5,36 @@ export class ChangeCustomerFieldsImplementation
   extends PrismaCore
   implements ChangeCustomerFieldsRepository_I
 {
-  async update({ id, ...props }: propsUpdate_I): Promise<void> {
+  async update({ id, messageId, ...props }: propsUpdate_I): Promise<void> {
     try {
       await this.prismaClient.customers.update({
         where: { id },
         data: props,
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Error("Erro dataBase.");
+    }
+  }
+
+  async createCustomerMessage(
+    customerId: number,
+    messageId: number
+  ): Promise<void> {
+    try {
+      await this.prismaClient.messagesOnCustomer.create({
+        data: { customerId, messageId },
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Error("Erro dataBase.");
+    }
+  }
+
+  async deleteAllMsg(id: number): Promise<void> {
+    try {
+      await this.prismaClient.messagesOnCustomer.deleteMany({
+        where: { customerId: id },
       });
     } catch (error) {
       console.log(error);

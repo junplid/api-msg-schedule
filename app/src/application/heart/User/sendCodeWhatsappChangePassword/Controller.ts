@@ -11,7 +11,7 @@ export const SendCodeWhatsappChangePasswordController = (
     res: Response
   ): Promise<Response> => {
     try {
-      const data = await sendCodeWhatsappChangePasswordUseCase.run(req.params);
+      const data = await sendCodeWhatsappChangePasswordUseCase.run(req.body);
       return res.status(201).json(data);
     } catch (error: any) {
       if (error instanceof ValidationError) {

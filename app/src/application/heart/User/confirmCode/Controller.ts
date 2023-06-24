@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
-import { SendCodeWhatsappChangePasswordDTO_I } from "./DTO";
-import { SendCodeWhatsappChangePasswordUseCase } from "./UseCase";
+import { ConfirmCodeDTO_I } from "./DTO";
+import { ConfirmCodeUseCase } from "./UseCase";
 import { ValidationError } from "express-validation";
 
-export const SendCodeWhatsappChangePasswordController = (
-  sendCodeWhatsappChangePasswordUseCase: SendCodeWhatsappChangePasswordUseCase
+export const ConfirmCodeController = (
+  confirmCodeUseCase: ConfirmCodeUseCase
 ) => {
   const execute = async (
-    req: Request<SendCodeWhatsappChangePasswordDTO_I>,
+    req: Request<any, any, ConfirmCodeDTO_I>,
     res: Response
   ): Promise<Response> => {
     try {
-      const data = await sendCodeWhatsappChangePasswordUseCase.run(req.params);
+      const data = await confirmCodeUseCase.run(req.body);
       return res.status(201).json(data);
     } catch (error: any) {
       if (error instanceof ValidationError) {

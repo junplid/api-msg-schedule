@@ -52,6 +52,22 @@ export class ChangeCustomerFieldsUseCase {
       ...(dto.productId && { productId: Number(dto.productId) }),
       ...(dto.whatsapp && { whatsapp: dto.whatsapp }),
     });
+    console.log("55 Veio aqui");
+
+    await this.changeCustomerFields.deleteAllMsg(Number(dto.id));
+    console.log("57 Veio aqui");
+
+    console.log(dto);
+    await Promise.all(
+      dto?.messageId?.map(async (e) => {
+        await this.changeCustomerFields.createCustomerMessage(
+          Number(dto.id),
+          e
+        );
+      })
+    );
+
+    console.log("Veio aqui");
 
     return { message: "OK" };
   }

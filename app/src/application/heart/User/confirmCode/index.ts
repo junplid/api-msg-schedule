@@ -1,14 +1,8 @@
-import { SendCodeWhatsappChangePasswordImplementation } from "./Implementation";
-import { SendCodeWhatsappChangePasswordController } from "./Controller";
-import { SendCodeWhatsappChangePasswordUseCase } from "./UseCase";
+import { ConfirmCodeImplementation } from "./Implementation";
+import { ConfirmCodeController } from "./Controller";
+import { ConfirmCodeUseCase } from "./UseCase";
 
-const sendCodeWhatsappChangePasswordImplementation =
-  new SendCodeWhatsappChangePasswordImplementation();
-const sendCodeWhatsappChangePasswordUseCase =
-  new SendCodeWhatsappChangePasswordUseCase(
-    sendCodeWhatsappChangePasswordImplementation
-  );
-export const sendCodeWhatsappChangePasswordController =
-  SendCodeWhatsappChangePasswordController(
-    sendCodeWhatsappChangePasswordUseCase
-  ).execute;
+const confirmCodeImplementation = new ConfirmCodeImplementation();
+const confirmCodeUseCase = new ConfirmCodeUseCase(confirmCodeImplementation);
+export const confirmCodeController =
+  ConfirmCodeController(confirmCodeUseCase).execute;

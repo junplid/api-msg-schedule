@@ -12,6 +12,7 @@ export interface ChangeCustomerFieldsDTO_I {
   readonly planId: number;
   readonly productId: number;
   readonly userId: number;
+  readonly messageId: number[];
 }
 
 export interface ChangeCustomerFieldsDTO_I_Params extends ParamsDictionary {
