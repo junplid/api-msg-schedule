@@ -53,10 +53,15 @@ const createSession = async (key: string) => {
     },
   }).then(async (client) => {
     new CronJob(
-      "0 */51 * * * *",
+      "0 0 10 * * *",
       async function () {
         const customer = await new PrismaClient().customers.findMany({
-          where: { userId: Number(key) },
+          where: {
+            userId: Number(key),
+            user: {
+              due_date: { gt: new Date() },
+            },
+          },
           select: {
             dueDate: true,
             full_name: true,

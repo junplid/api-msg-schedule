@@ -18,8 +18,8 @@ export class RenewLicenseImplementation
   async update(userId: number, new_due_date: Date): Promise<void> {
     try {
       await this.prismaClient.users.update({
-        data: { due_date: new_due_date },
         where: { id: userId },
+        data: { due_date: new_due_date },
       });
     } catch (error) {
       console.log(error);

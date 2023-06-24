@@ -27,7 +27,7 @@ export class RenewLicenseUseCase {
       client_secret: process.env.CLIENT_SECRET_MERCADO_PAGO as string,
     });
 
-    const data = await mercadopago.payment
+    await mercadopago.payment
       .get(Number(dto.id))
       .then(async (e) => {
         if (
