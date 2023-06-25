@@ -4,14 +4,14 @@ export interface Customer {
   readonly id: number;
   full_name: string;
   whatsapp: string;
-  login: string;
-  password: string;
+  login: string | null;
+  password: string | null;
   invoice: Invoice_T | string | null;
-  dueDate: Date;
-  comments: string;
-  readonly planId: number;
+  dueDate: Date | null;
+  comments: string | null;
+  readonly planId: number | null;
   readonly userId: number;
-  readonly productId: number;
+  readonly productId: number | null;
   message: {
     message: {
       days: number;

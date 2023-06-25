@@ -10,8 +10,8 @@ export class ListCustomerOfUserUseCase {
 
     const newData = data.map((dt) => ({
       ...dt,
-      value_plan: dt.plan.name,
-      value_product: dt.product.name,
+      value_plan: dt?.plan?.name,
+      value_product: dt?.product?.name,
       product: undefined,
       plan: undefined,
       messageId: dt.message.map((ms) => ms.message.id),

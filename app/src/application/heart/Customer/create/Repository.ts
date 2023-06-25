@@ -8,8 +8,8 @@ export type propsCreateCData_I = {
   invoice: Invoice_T;
   dueDate: Date;
   comments: string;
-  readonly planId: number;
-  readonly productId: number;
+  readonly planId?: number;
+  readonly productId?: number;
   readonly userId: number;
 };
 

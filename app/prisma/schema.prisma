@@ -18,7 +18,7 @@ model users {
   available Int?        @default(0)
   payday    DateTime?
   due_date  DateTime?
-  createAt  DateTime?
+  createAt  DateTime    @default(now())
   customer  customers[]
   messages  messages[]
   products  products[]
@@ -40,6 +40,7 @@ model products {
   name      String
   price     Decimal     @db.Decimal(5, 2)
   userId    Int
+  createAt  DateTime    @default(now())
   custormer customers[]
   plan      plans[]
   user      users       @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -72,16 +73,17 @@ model customers {
   id        Int                  @id @default(autoincrement())
   full_name String
   whatsapp  String               @db.VarChar(15)
-  login     String               @unique
-  password  String
+  login     String?              @unique
+  password  String?
   invoice   String?              @default("PENDING")
-  dueDate   DateTime
-  comments  String
-  planId    Int
-  productId Int
+  dueDate   DateTime?
+  comments  String?
+  planId    Int?
+  productId Int?
   userId    Int
-  plan      plans                @relation(fields: [planId], references: [id], onDelete: Cascade)
-  product   products             @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createAt  DateTime             @default(now())
+  plan      plans?               @relation(fields: [planId], references: [id], onDelete: Cascade)
+  product   products?            @relation(fields: [productId], references: [id], onDelete: Cascade)
   user      users                @relation(fields: [userId], references: [id], onDelete: Cascade)
   message   messagesOnCustomer[]
 

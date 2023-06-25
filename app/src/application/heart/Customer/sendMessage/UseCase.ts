@@ -46,14 +46,16 @@ export class SendMessageCustomerUseCase {
             .replace(/\{NOME\}/, custInfo.full_name)
             .replace(/\{PRIMEIRO_NOME\}/, custInfo.full_name.split(" ")[0])
             .replace(/\{ZAP\}/, custInfo.whatsapp)
-            .replace(/\{LOGIN\}/, custInfo.login)
-            .replace(/\{SENHA\}/, custInfo.password)
-            .replace(/\{PLANO\}/, custInfo.plan.name)
-            .replace(/\{PRODUTO\}/, custInfo.product.name)
-            .replace(/\{OBS\}/, custInfo.comments)
+            .replace(/\{LOGIN\}/, custInfo?.login ?? "{LOGIN}")
+            .replace(/\{SENHA\}/, custInfo?.password ?? "{SENHA}")
+            .replace(/\{PLANO\}/, custInfo?.plan?.name ?? "{PLANO}")
+            .replace(/\{PRODUTO\}/, custInfo?.product?.name ?? "{PRODUTO}")
+            .replace(/\{OBS\}/, custInfo?.comments ?? "{OBS}")
             .replace(
               /\{DATA_VENCI\}/,
-              new Date(custInfo.dueDate).toLocaleDateString("pt-br")
+              custInfo?.dueDate
+                ? new Date(custInfo.dueDate).toLocaleDateString("pt-br")
+                : "{DATA_VENCI}"
             )}`
         );
       } catch (error) {

@@ -14,15 +14,15 @@ export type propsUpdate_I = {
 };
 
 export interface result_I {
-  whatsapp: string;
   userId: number;
+  login: string | null;
+  password: string | null;
+  plan: { name: string } | null;
+  product: { name: string } | null;
+  comments: string | null;
+  dueDate: Date | null;
   full_name: string;
-  login: string;
-  password: string;
-  dueDate: Date;
-  comments: string;
-  plan: { name: string };
-  product: { name: string };
+  whatsapp: string;
 }
 
 export interface SendMessageCustomerRepository_I {

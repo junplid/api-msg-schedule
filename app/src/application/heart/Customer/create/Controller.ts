@@ -11,9 +11,11 @@ export const CreateCustomerController = (
     res: Response
   ): Promise<Response> => {
     try {
+      console.log(req.body);
       const data = await createCustomerUseCase.run(req.body);
       return res.status(201).json(data);
     } catch (error: any) {
+      console.log(error);
       if (error instanceof ValidationError) {
         return res.status(error.statusCode ?? 500).json(error.details ?? error);
       }

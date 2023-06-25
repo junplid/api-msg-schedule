@@ -15,7 +15,11 @@ export class ChangeFieldsUserUseCase {
       ...(dto.password && { password: await generatePassword(dto.password) }),
     };
 
-    await this.changeFieldsUser.update(newobj, userId);
+    try {
+      await this.changeFieldsUser.update(newobj, userId);
+    } catch (error) {
+      throw new Error("WhatsApp ou E-mail já foi cadastrado");
+    }
     return { message: "OK" };
   }
 }

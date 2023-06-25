@@ -20,7 +20,7 @@ export const ChangeFieldsUserController = (
       if (error instanceof ValidationError) {
         return res.status(error.statusCode ?? 500).json(error.details ?? error);
       }
-      return res.status(500).json(error);
+      return res.status(500).json({ message: error.message });
     }
   };
 

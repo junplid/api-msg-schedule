@@ -12,8 +12,7 @@ export class ChangeFieldsUserImplementation
         where: { id },
         data,
       });
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
       throw new Error("Erro dataBase.");
     }
   }

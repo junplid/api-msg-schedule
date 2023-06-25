@@ -20,40 +20,42 @@ function calcularNovaDataVencimento(dataVencimento: string | Date) {
 export class RenewLicenseUseCase {
   constructor(private renewLicense: RenewLicenseRepository_I) {}
 
-  async run(dto: RenewLicenseDTO_I_Params): Promise<RunUseCase_I> {
+  async run(dto: RenewLicenseDTO_I_Params, body: any): Promise<RunUseCase_I> {
     mercadopago.configure({
       access_token: process.env.ACCESS_TOKEN_MERCADO_PAGO as string,
       client_id: process.env.CLIENT_ID_MERCADO_PAGO as string,
       client_secret: process.env.CLIENT_SECRET_MERCADO_PAGO as string,
     });
 
-    await mercadopago.payment
-      .get(Number(dto.id))
-      .then(async (e) => {
-        if (
-          e.body.status === "approved" &&
-          e.body.status_detail === "accredited"
-        ) {
-          if (idsPay.includes(dto.key)) return true;
-          idsPay.push(dto.key);
-          await this.renewLicense.create({
-            payday: new Date(),
-            price: Number(process.env.PRICE) as number,
-          });
-          const date_info = await this.renewLicense.getInfo(Number(dto.id));
-          if (!date_info) return false;
-          if (!date_info.due_date) return false;
+    await mercadopago.payment.get(Number(body?.data?.id)).then(async (e) => {
+      if (
+        e.body.status === "approved" &&
+        e.body.status_detail === "accredited"
+      ) {
+        if (idsPay.includes(dto.key)) return true;
+        idsPay.push(dto.key);
+        console.log({
+          key: dto.key,
+          in: idsPay.includes(dto.key),
+          list: idsPay,
+        });
+        await this.renewLicense.create({
+          payday: new Date(),
+          price: Number(process.env.PRICE) as number,
+        });
+        const date_info = await this.renewLicense.getInfo(Number(dto.id));
+        if (!date_info) return false;
+        if (!date_info.due_date) return false;
 
-          const newDateVencimento = calcularNovaDataVencimento(
-            date_info.due_date
-          );
+        const newDateVencimento = calcularNovaDataVencimento(
+          date_info.due_date
+        );
 
-          await this.renewLicense.update(Number(dto.id), newDateVencimento);
-
-          return true;
-        }
+        await this.renewLicense.update(Number(dto.id), newDateVencimento);
         return true;
-      });
+      }
+      return true;
+    });
     return {
       message: "OK",
     };

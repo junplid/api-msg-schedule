@@ -14,14 +14,13 @@ App.use(function (err, req, res, next) {
   if (err instanceof ValidationError) {
     return res.status(err.statusCode).json(err.details);
   }
-
   return res.status(500).json(err);
 });
 
 const server = http.createServer(App);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "https://msg-schedule-junplid.vercel.app",
   },
 });
 
@@ -53,7 +52,7 @@ const createSession = async (key: string) => {
     },
   }).then(async (client) => {
     new CronJob(
-      "0 0 10 * * *",
+      "0 0 */10 * * *",
       async function () {
         const customer = await new PrismaClient().customers.findMany({
           where: {
@@ -88,21 +87,23 @@ const createSession = async (key: string) => {
               dataDeNotificacao.getDate() - msg.message.days
             );
 
-            if (new Date(cust.dueDate) < dataDeNotificacao) {
+            if (cust?.dueDate && new Date(cust.dueDate) < dataDeNotificacao) {
               client.sendText(
                 `55${cust.whatsapp}@c.us`,
                 `${msg.message.text
                   .replace(/\{NOME\}/, cust.full_name)
                   .replace(/\{PRIMEIRO_NOME\}/, cust.full_name.split(" ")[0])
                   .replace(/\{ZAP\}/, cust.whatsapp)
-                  .replace(/\{LOGIN\}/, cust.login)
-                  .replace(/\{SENHA\}/, cust.password)
-                  .replace(/\{PLANO\}/, cust.plan.name)
-                  .replace(/\{PRODUTO\}/, cust.product.name)
-                  .replace(/\{OBS\}/, cust.comments)
+                  .replace(/\{LOGIN\}/, cust?.login ?? "{LOGIN}")
+                  .replace(/\{SENHA\}/, cust?.password ?? "{SENHA}")
+                  .replace(/\{PLANO\}/, cust?.plan?.name ?? "{PLANO}")
+                  .replace(/\{PRODUTO\}/, cust?.product?.name ?? "{PRODUTO}")
+                  .replace(/\{OBS\}/, cust?.comments ?? "{OBS}")
                   .replace(
                     /\{DATA_VENCI\}/,
-                    new Date(cust.dueDate).toLocaleDateString("pt-br")
+                    cust?.dueDate
+                      ? new Date(cust.dueDate).toLocaleDateString("pt-br")
+                      : "{DATA_VENCI}"
                   )}`
               );
             }
@@ -111,7 +112,7 @@ const createSession = async (key: string) => {
       },
       null,
       false,
-      "America/Los_Angeles"
+      "America/Sao_Paulo"
     ).start();
     return client;
   });
@@ -133,7 +134,7 @@ io.on("connection", async (socket) => {
 });
 
 new CronJob(
-  "0 0 22 * * *",
+  "0 26 10 * * *",
   async function () {
     try {
       const prisma = new PrismaClient();
@@ -152,12 +153,14 @@ new CronJob(
         select: { id: true, whatsapp: true, full_name: true },
       });
 
+      console.log(users);
+
       await Promise.all(
         users?.map(async (user) => {
           try {
             await storeSessions[userRoot?.id!]?.sendText(
               `55${user.whatsapp}@c.us`,
-              `**${user.full_name}**, informamos que a sua licença para utilizar o sistema expirou, resultando na interrupção dos serviços do seu bot. Para continuar utilizando nossos serviços, renove a sua licença por mais 31 dias!`
+              `**${user.full_name}**, informamos que a sua licença para utilizar o sistema expirou, resultando na interrupção dos serviços do seu bot. Para continuar utilizando nossos serviços, renove a sua licença por mais 30 dias!`
             );
             return;
           } catch (error) {
@@ -171,5 +174,5 @@ new CronJob(
   },
   null,
   false,
-  "America/Los_Angeles"
+  "America/Sao_Paulo"
 ).start();
