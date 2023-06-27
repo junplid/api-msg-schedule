@@ -34,23 +34,18 @@ export class RenewLicenseUseCase {
       ) {
         if (idsPay.includes(dto.key)) return true;
         idsPay.push(dto.key);
-        console.log({
-          key: dto.key,
-          in: idsPay.includes(dto.key),
-          list: idsPay,
-        });
         await this.renewLicense.create({
           payday: new Date(),
           price: Number(process.env.PRICE) as number,
+          type: "root",
+          userId: Number(dto.id),
         });
         const date_info = await this.renewLicense.getInfo(Number(dto.id));
         if (!date_info) return false;
         if (!date_info.due_date) return false;
-
         const newDateVencimento = calcularNovaDataVencimento(
           date_info.due_date
         );
-
         await this.renewLicense.update(Number(dto.id), newDateVencimento);
         return true;
       }

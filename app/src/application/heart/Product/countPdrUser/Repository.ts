@@ -1,3 +1,3 @@
 export interface CountProductsUserRepository_I {
-  get(): Promise<number>;
+  get(userId: number): Promise<number>;
 }

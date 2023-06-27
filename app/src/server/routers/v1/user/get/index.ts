@@ -16,6 +16,9 @@ import { countCustomerUserController } from "../../../../../application/heart/Cu
 import { countMessageUserController } from "../../../../../application/heart/Message/countUser";
 import { customerStatisticsRootController } from "../../../../../application/heart/Customer/CustomerStatisticsRoot";
 import { customerStatisticsUserController } from "../../../../../application/heart/Customer/CustomerStatisticsUser";
+import { statisticController } from "../../../../../application/heart/User/Statistic";
+import { countProductsUserController } from "../../../../../application/heart/Product/countPdrUser";
+import { countPlansUserController } from "../../../../../application/heart/Product/countPlUSer";
 
 const router = Router();
 
@@ -205,6 +208,36 @@ router.get(
 );
 
 router.get(
+  "/count-products-user",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+    }),
+  }),
+  countProductsUserController
+);
+
+router.get(
+  "/count-plans-user",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+    }),
+  }),
+  countPlansUserController
+);
+
+router.get(
   "/count-subcribers-root",
   validate({
     body: Joi.object({
@@ -277,6 +310,21 @@ router.get(
     }),
   }),
   customerStatisticsUserController
+);
+
+router.get(
+  "/statistics-count-subscribers-root",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+    }),
+  }),
+  statisticController
 );
 
 export { router as RouterGet };

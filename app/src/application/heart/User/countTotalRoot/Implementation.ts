@@ -7,7 +7,7 @@ export class CountSubscribersRootImplementation
 {
   async get(): Promise<number> {
     try {
-      const datas = await this.prismaClient.customers.count();
+      const datas = await this.prismaClient.users.count();
       return datas;
     } catch (error) {
       console.log(error);

@@ -1,14 +1,14 @@
-import { CountProductsUserRepository_I } from "./Repository";
+import { CountPlansUserRepository_I } from "./Repository";
 import { PrismaCore } from "../../../implementations/core";
 
-export class CountProductsUserImplementation
+export class CountPlansUserImplementation
   extends PrismaCore
-  implements CountProductsUserRepository_I
+  implements CountPlansUserRepository_I
 {
   async get(userId: number): Promise<number> {
     try {
-      const datas = await this.prismaClient.products.count({
-        where: { userId },
+      const datas = await this.prismaClient.plans.count({
+        where: { product: { userId } },
       });
       return datas;
     } catch (error) {
