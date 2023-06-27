@@ -7,6 +7,15 @@ import { listPlansOfPdrController } from "../../../../../application/heart/Produ
 import { listOnlyProductOfUserController } from "../../../../../application/heart/Product/listOnlyPdrUser";
 import { getStateSessionWhatsappController } from "../../../../../application/heart/User/getStateSessionWhatsapp";
 import { infoUserController } from "../../../../../application/heart/User/info";
+import { countCustomerController } from "../../../../../application/heart/Customer/countRoot";
+import { countMessageController } from "../../../../../application/heart/Message/countRoot";
+import { countPlansController } from "../../../../../application/heart/Product/countPlRoot";
+import { countProductsController } from "../../../../../application/heart/Product/countPdrRoot";
+import { countSubscribersRootController } from "../../../../../application/heart/User/countTotalRoot";
+import { countCustomerUserController } from "../../../../../application/heart/Customer/countUser";
+import { countMessageUserController } from "../../../../../application/heart/Message/countUser";
+import { customerStatisticsRootController } from "../../../../../application/heart/Customer/CustomerStatisticsRoot";
+import { customerStatisticsUserController } from "../../../../../application/heart/Customer/CustomerStatisticsUser";
 
 const router = Router();
 
@@ -133,6 +142,141 @@ router.get(
     }),
   }),
   getStateSessionWhatsappController
+);
+
+router.get(
+  "/count-customers-root",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+    }),
+  }),
+  countCustomerController
+);
+
+router.get(
+  "/count-messages-root",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+    }),
+  }),
+  countMessageController
+);
+
+router.get(
+  "/count-plans-root",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+    }),
+  }),
+  countPlansController
+);
+
+router.get(
+  "/count-products-root",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+    }),
+  }),
+  countProductsController
+);
+
+router.get(
+  "/count-subcribers-root",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+    }),
+  }),
+  countSubscribersRootController
+);
+
+router.get(
+  "/count-customers-user",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+    }),
+  }),
+  countCustomerUserController
+);
+
+router.get(
+  "/count-messages-user",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+    }),
+  }),
+  countMessageUserController
+);
+
+router.get(
+  "/statistics-count-customers-root",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+    }),
+  }),
+  customerStatisticsRootController
+);
+
+router.get(
+  "/statistics-count-customers-user",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+    }),
+  }),
+  customerStatisticsUserController
 );
 
 export { router as RouterGet };

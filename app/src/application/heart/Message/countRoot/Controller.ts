@@ -1,0 +1,25 @@
+import { Request, Response } from "express";
+import { CountMessageDTO_I } from "./DTO";
+import { CountMessageUseCase } from "./UseCase";
+import { ValidationError } from "express-validation";
+
+export const CountMessageController = (
+  countMessageUseCase: CountMessageUseCase
+) => {
+  const execute = async (
+    req: Request<any, any, CountMessageDTO_I>,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const data = await countMessageUseCase.run(req.body);
+      return res.status(200).json(data);
+    } catch (error: any) {
+      if (error instanceof ValidationError) {
+        return res.status(error.statusCode ?? 500).json(error.details ?? error);
+      }
+      return res.status(500).json(error);
+    }
+  };
+
+  return { execute };
+};

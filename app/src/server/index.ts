@@ -20,7 +20,7 @@ App.use(function (err, req, res, next) {
 const server = http.createServer(App);
 const io = new Server(server, {
   cors: {
-    origin: "https://msg-schedule-junplid.vercel.app",
+    origin: "*",
   },
 });
 
