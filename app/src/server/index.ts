@@ -126,7 +126,6 @@ io.on("connection", async (socket) => {
       await createSession(data.key);
       socket.emit("sucess-connetion", true);
     } catch (error) {
-      console.log(error);
       socket.leave(data.key);
       socket.emit("leave", data.key);
     }
@@ -152,8 +151,6 @@ new CronJob(
         },
         select: { id: true, whatsapp: true, full_name: true },
       });
-
-      console.log(users);
 
       await Promise.all(
         users?.map(async (user) => {

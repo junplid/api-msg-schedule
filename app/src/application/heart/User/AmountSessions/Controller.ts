@@ -1,15 +1,17 @@
 import { Request, Response } from "express";
-import { StatisticDTO_I } from "./DTO";
-import { StatisticUseCase } from "./UseCase";
+import { AmountSessionsWhatsAppDTO_I } from "./DTO";
+import { AmountSessionsWhatsAppUseCase } from "./UseCase";
 import { ValidationError } from "express-validation";
 
-export const StatisticController = (statisticUseCase: StatisticUseCase) => {
+export const AmountSessionsWhatsAppController = (
+  amountSessionsWhatsAppUseCase: AmountSessionsWhatsAppUseCase
+) => {
   const execute = async (
-    req: Request<any, any, StatisticDTO_I>,
+    req: Request<any, any, AmountSessionsWhatsAppDTO_I>,
     res: Response
   ): Promise<Response> => {
     try {
-      const data = await statisticUseCase.run(req.body);
+      const data = await amountSessionsWhatsAppUseCase.run(req.body);
       return res.status(200).json(data);
     } catch (error: any) {
       if (error instanceof ValidationError) {

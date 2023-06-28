@@ -19,6 +19,10 @@ import { customerStatisticsUserController } from "../../../../../application/hea
 import { statisticController } from "../../../../../application/heart/User/Statistic";
 import { countProductsUserController } from "../../../../../application/heart/Product/countPdrUser";
 import { countPlansUserController } from "../../../../../application/heart/Product/countPlUSer";
+import { renewCustomerController } from "../../../../../application/heart/Customer/createRenew";
+import { statisticFinanceSubsController } from "../../../../../application/heart/User/StatisticFinanceSubs";
+import { statisticFinanceCustomersController } from "../../../../../application/heart/User/StatisticFinanceCustomers";
+import { amountSessionsWhatsAppController } from "../../../../../application/heart/User/AmountSessions";
 
 const router = Router();
 
@@ -325,6 +329,51 @@ router.get(
     }),
   }),
   statisticController
+);
+
+router.get(
+  "/statistics-finance-subscribers-root",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+    }),
+  }),
+  statisticFinanceSubsController
+);
+
+router.get(
+  "/statistics-finance-customers-user",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+    }),
+  }),
+  statisticFinanceCustomersController
+);
+
+router.get(
+  "/amount-session-whatsapp",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+    }),
+  }),
+  amountSessionsWhatsAppController
 );
 
 export { router as RouterGet };

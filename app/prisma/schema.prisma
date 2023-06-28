@@ -101,7 +101,3 @@ model payments {
   userId Int
   users  users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
-
-// types = "root" | "user"
-// root = são pagamentos de assinantes
-// user = são pagamentos/renovaçoes de clientes cadastrados pelo usuario do painel

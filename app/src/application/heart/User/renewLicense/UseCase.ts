@@ -27,19 +27,23 @@ export class RenewLicenseUseCase {
       client_secret: process.env.CLIENT_SECRET_MERCADO_PAGO as string,
     });
 
+    console.log("30");
     await mercadopago.payment.get(Number(body?.data?.id)).then(async (e) => {
       if (
         e.body.status === "approved" &&
         e.body.status_detail === "accredited"
       ) {
+        console.log("35");
         if (idsPay.includes(dto.key)) return true;
         idsPay.push(dto.key);
+        console.log("37");
         await this.renewLicense.create({
           payday: new Date(),
           price: Number(process.env.PRICE) as number,
           type: "root",
           userId: Number(dto.id),
         });
+        console.log("44");
         const date_info = await this.renewLicense.getInfo(Number(dto.id));
         if (!date_info) return false;
         if (!date_info.due_date) return false;

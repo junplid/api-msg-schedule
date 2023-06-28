@@ -5,7 +5,7 @@ import { createProductController } from "../../../../../application/heart/Produc
 import { createCustomerController } from "../../../../../application/heart/Customer/create";
 import { sendMessageCustomerController } from "../../../../../application/heart/Customer/sendMessage";
 import { orderRenewLicenseController } from "../../../../../application/heart/User/orderRenewLicense";
-import { renewLicenseController } from "../../../../../application/heart/User/renewLicense";
+import { renewCustomerController } from "../../../../../application/heart/Customer/createRenew";
 
 const router = Router();
 
@@ -34,14 +34,31 @@ router.post(
   createMessageController
 );
 
-// marcou como pago então salva na tebela de financeiro os pagamentos
-// os pendentes
-// o valor
-// e etc.
+router.post(
+  "/renew-customer",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+      customerId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+      newDate: Joi.date().required().messages({
+        "any.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+      }),
+    }),
+  }),
+  renewCustomerController
+);
 
-// liga o cliente
-
-// enviar menssagem para o cliente
 router.post(
   "/send-message",
   validate({
