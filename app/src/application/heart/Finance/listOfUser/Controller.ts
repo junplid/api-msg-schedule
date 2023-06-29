@@ -1,20 +1,22 @@
 import { Request, Response } from "express";
-import { RenewCustomerDTO_I } from "./DTO";
-import { RenewCustomerUseCase } from "./UseCase";
+import { ListFinanceOfUserDTO_I } from "./DTO";
+import { ListFinanceOfUserUseCase } from "./UseCase";
 import { ValidationError } from "express-validation";
 
-export const RenewCustomerController = (
-  renewCustomerUseCase: RenewCustomerUseCase
+export const ListFinanceOfUserController = (
+  listFinanceOfUserUseCase: ListFinanceOfUserUseCase
 ) => {
   const execute = async (
-    req: Request<any, any, RenewCustomerDTO_I>,
+    req: Request<any, any, { userId: number }, ListFinanceOfUserDTO_I>,
     res: Response
   ): Promise<Response> => {
     try {
-      const data = await renewCustomerUseCase.run(req.body);
-      return res.status(201).json(data);
+      const data = await listFinanceOfUserUseCase.run({
+        ...req.body,
+        ...req.query,
+      });
+      return res.status(200).json(data);
     } catch (error: any) {
-      console.log(error);
       if (error instanceof ValidationError) {
         return res.status(error.statusCode ?? 500).json(error.details ?? error);
       }

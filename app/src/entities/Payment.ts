@@ -6,4 +6,6 @@ export interface Payment_I {
   payday: Date;
   type: string | "root" | "user";
   userId: number;
+  type_transation: string | "PROHIBITED" | "EXIT";
+  name: string;
 }

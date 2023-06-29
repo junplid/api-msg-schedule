@@ -16,16 +16,19 @@ export class RenewCustomerImplementation
             select: { price: true },
           },
           product: {
-            select: { price: true },
+            select: { price: true, name: true },
           },
         },
       });
       return data
         ? {
             expense: data.product!.price,
-            profit: Number(data.plan!.price) - Number(data.product!.price),
+            profit: Math.abs(
+              Number(data.plan!.price) - Number(data.product!.price)
+            ),
             sale: data.product!.price,
             userId: data.userId,
+            name: data.product!.name,
           }
         : null;
     } catch (error) {

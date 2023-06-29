@@ -23,6 +23,8 @@ import { renewCustomerController } from "../../../../../application/heart/Custom
 import { statisticFinanceSubsController } from "../../../../../application/heart/User/StatisticFinanceSubs";
 import { statisticFinanceCustomersController } from "../../../../../application/heart/User/StatisticFinanceCustomers";
 import { amountSessionsWhatsAppController } from "../../../../../application/heart/User/AmountSessions";
+import { listFinanceOfUserController } from "../../../../../application/heart/Finance/listOfUser";
+import { countFinanceOfUserController } from "../../../../../application/heart/Finance/count";
 
 const router = Router();
 
@@ -374,6 +376,52 @@ router.get(
     }),
   }),
   amountSessionsWhatsAppController
+);
+
+router.get(
+  "/my-payments",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+    }),
+    query: Joi.object({
+      page: Joi.string(),
+      amount: Joi.string(),
+      search: Joi.string(),
+      afterDate: Joi.string(),
+      beforeDate: Joi.string(),
+      type_transation: Joi.string().regex(/^(PROHIBITED|EXIT)$/),
+    }),
+  }),
+  listFinanceOfUserController
+);
+
+router.get(
+  "/count-finance",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+    }),
+    query: Joi.object({
+      page: Joi.string(),
+      amount: Joi.string(),
+      search: Joi.string(),
+      afterDate: Joi.string(),
+      beforeDate: Joi.string(),
+      type_transation: Joi.string().regex(/^(PROHIBITED|EXIT)$/),
+    }),
+  }),
+  countFinanceOfUserController
 );
 
 export { router as RouterGet };

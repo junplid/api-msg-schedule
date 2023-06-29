@@ -6,6 +6,7 @@ export interface resultFind_I {
   sale: number | Decimal;
   profit: number | Decimal;
   userId: number;
+  name: string;
 }
 
 export interface RenewCustomerRepository_I {

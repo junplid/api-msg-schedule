@@ -5,6 +5,7 @@ import { changeFieldsMessageController } from "../../../../../application/heart/
 import { changeFieldsProductController } from "../../../../../application/heart/Product/changeFields";
 import { changeFieldsPlanProductController } from "../../../../../application/heart/Product/changeFieldsPlan";
 import { changeCustomerFieldsController } from "../../../../../application/heart/Customer/changeFields";
+import { updatePaymentController } from "../../../../../application/heart/Finance/update";
 
 const router = Router();
 
@@ -141,6 +142,50 @@ router.put(
     }),
   }),
   changeCustomerFieldsController
+);
+
+router.put(
+  "/transaction",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+      id: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+      name: Joi.string().required().messages({
+        "string.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "string.base": "O campo precisa ser uma string",
+      }),
+      date: Joi.date().required().messages({
+        "any.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+      }),
+      type_transation: Joi.string()
+        .regex(/^(PROHIBITED|EXIT)$/)
+        .required()
+        .messages({
+          "string.empty": "Campo obrigatório",
+          "any.required": "Campo obrigatório",
+          "string.base": "O campo precisa ser uma string",
+          "string.pattern.base": "Valor invalido",
+        }),
+      price: Joi.number().min(0).required().messages({
+        "any.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.min": "Este campo precisar ser maior ou igual a 0",
+      }),
+    }),
+  }),
+  updatePaymentController
 );
 
 export { router as RouterUpdate };

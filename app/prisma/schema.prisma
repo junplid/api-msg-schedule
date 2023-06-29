@@ -94,10 +94,12 @@ model customers {
 }
 
 model payments {
-  id     Int      @id @default(autoincrement())
-  price  Decimal  @db.Decimal(5, 2)
-  type   String
-  payday DateTime
-  userId Int
-  users  users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id              Int      @id @default(autoincrement())
+  price           Decimal  @db.Decimal(5, 2)
+  type            String
+  type_transation String
+  payday          DateTime
+  name            String
+  userId          Int
+  users           users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }

@@ -6,6 +6,7 @@ import { createCustomerController } from "../../../../../application/heart/Custo
 import { sendMessageCustomerController } from "../../../../../application/heart/Customer/sendMessage";
 import { orderRenewLicenseController } from "../../../../../application/heart/User/orderRenewLicense";
 import { renewCustomerController } from "../../../../../application/heart/Customer/createRenew";
+import { createPaymentController } from "../../../../../application/heart/Finance/create";
 
 const router = Router();
 
@@ -193,6 +194,44 @@ router.post(
     }),
   }),
   orderRenewLicenseController
+);
+
+router.post(
+  "/transaction",
+  validate({
+    body: Joi.object({
+      userId: Joi.number().min(0).required().messages({
+        "number.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.base": "Este campo precisa ser do tipo número",
+        "number.min": "Precisa ter no mínimo 0",
+      }),
+      name: Joi.string().required().messages({
+        "string.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "string.base": "O campo precisa ser uma string",
+      }),
+      date: Joi.date().required().messages({
+        "any.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+      }),
+      type_transation: Joi.string()
+        .regex(/^(PROHIBITED|EXIT)$/)
+        .required()
+        .messages({
+          "string.empty": "Campo obrigatório",
+          "any.required": "Campo obrigatório",
+          "string.base": "O campo precisa ser uma string",
+          "string.pattern.base": "Valor invalido",
+        }),
+      price: Joi.number().min(0).required().messages({
+        "any.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "number.min": "Este campo precisar ser maior ou igual a 0",
+      }),
+    }),
+  }),
+  createPaymentController
 );
 
 export { router as RouterCreate };

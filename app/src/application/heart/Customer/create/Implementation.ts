@@ -1,10 +1,38 @@
 import { CreateCustomerRepository_I, propsCreateCData_I } from "./Repository";
 import { PrismaCore } from "../../../implementations/core";
+import { Decimal } from "@prisma/client/runtime";
+import { Payment_I } from "../../../../entities/Payment";
 
 export class CreateCustomerImplementation
   extends PrismaCore
   implements CreateCustomerRepository_I
 {
+  async findProduct(
+    pdrId: number
+  ): Promise<{ price: number | Decimal; name: string } | null> {
+    try {
+      const data = await this.prismaClient.products.findUnique({
+        where: { id: pdrId },
+        select: { price: true, name: true },
+      });
+      return data ?? null;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Erro dataBase.");
+    }
+  }
+  async findPlan(planId: number): Promise<number | Decimal | null> {
+    try {
+      const data = await this.prismaClient.plans.findUnique({
+        where: { id: planId },
+        select: { price: true },
+      });
+      return data?.price ?? null;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Erro dataBase.");
+    }
+  }
   async createCustomerMessage(
     customerId: number,
     messageId: number
@@ -25,6 +53,14 @@ export class CreateCustomerImplementation
         select: { id: true },
       });
       return data.id;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Erro dataBase.");
+    }
+  }
+  async createPayment(data: Payment_I): Promise<void> {
+    try {
+      await this.prismaClient.payments.create({ data });
     } catch (error) {
       console.log(error);
       throw new Error("Erro dataBase.");
