@@ -41,7 +41,7 @@ export class SendMessageCustomerUseCase {
     if (storeSessions[userId] !== undefined) {
       try {
         await storeSessions[userId]?.sendText(
-          `55${custInfo.whatsapp}@c.us`,
+          `${custInfo.whatsapp}@c.us`,
           `${dto.text
             .replace(/\{NOME\}/, custInfo.full_name)
             .replace(/\{PRIMEIRO_NOME\}/, custInfo.full_name.split(" ")[0])

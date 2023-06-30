@@ -9,7 +9,7 @@ export class StatisticFinanceCustomersImplementation
     try {
       const datas = await this.prismaClient.payments.findMany({
         orderBy: { payday: "asc" },
-        where: { type: "user", userId },
+        where: { type: "user", userId, type_transation: "PROHIBITED" },
         select: {
           id: true,
           payday: true,

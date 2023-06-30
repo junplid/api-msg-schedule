@@ -49,6 +49,7 @@ export class RenewLicenseUseCase {
           date_info.due_date
         );
         await this.renewLicense.update(Number(dto.id), newDateVencimento);
+        await this.renewLicense.sumAmount(Number(process.env.PRICE));
         return true;
       }
       return true;

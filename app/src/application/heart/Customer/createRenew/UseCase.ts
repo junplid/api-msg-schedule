@@ -47,11 +47,12 @@ export class RenewCustomerUseCase {
       price: userIdCust.profit,
       type: "user",
       userId: userIdCust.userId,
-      name: `Renovação efetuada: ${userIdCust.name}`,
+      name: `Renovação efetuada: ${userIdCust.name}, CLI: ${userIdCust.full_name}, Id Cliente: ${dto.customerId}`,
       type_transation: "PROHIBITED",
     };
 
     await this.renewCustomer.createPayment(payment as Payment_I);
+    await this.renewCustomer.sumAmount(dto.userId, Number(userIdCust.profit));
 
     return { message: "OK" };
   }

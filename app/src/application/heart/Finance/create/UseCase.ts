@@ -11,6 +11,12 @@ export class CreatePaymentUseCase {
       type: "user",
       payday: new Date(date),
     });
+    await this.createPayment.sumAmount(
+      dto.userId,
+      dto.type_transation === "PROHIBITED" ? Number(dto.price) : undefined,
+      dto.type_transation === "EXIT" ? Number(dto.price) : undefined
+    );
+
     return { message: "OK", data: { id: data } };
   }
 }

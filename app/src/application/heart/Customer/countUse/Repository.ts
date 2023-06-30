@@ -1,14 +1,11 @@
-import { Decimal } from "@prisma/client/runtime";
 import { Customer } from "../../../../entities/Customer";
 
-export interface resultList_I extends Omit<Customer, "userId"> {
+export interface resultCount_I extends Omit<Customer, "userId"> {
   product: {
     name: string;
-    price?: Decimal;
   } | null;
   plan: {
     name: string;
-    price?: Decimal;
   } | null;
 }
 
@@ -26,6 +23,6 @@ export interface propsGet_I {
   productId?: number;
 }
 
-export interface ListCustomerOfUserRepository_I {
-  get(props: propsGet_I): Promise<resultList_I[]>;
+export interface CountCustomerOfUserRepository_I {
+  get(props: propsGet_I): Promise<number>;
 }

@@ -1,4 +1,4 @@
-export interface ListCustomerOfUserDTO_I {
+export interface CountCustomerOfUserDTO_I {
   page?: number;
   amount?: number;
   name?: string;

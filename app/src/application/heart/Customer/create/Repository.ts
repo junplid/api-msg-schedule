@@ -22,6 +22,7 @@ export interface CreateCustomerRepository_I {
   findProduct(
     pdrId: number
   ): Promise<{ price: number | Decimal; name: string } | null>;
+  sumAmount(userId: number, vl: number): Promise<void>;
   createCustomer(props: propsCreateCData_I): Promise<number>;
   createCustomerMessage(customerId: number, messageId: number): Promise<void>;
 }

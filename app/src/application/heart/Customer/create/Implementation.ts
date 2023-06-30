@@ -66,4 +66,15 @@ export class CreateCustomerImplementation
       throw new Error("Erro dataBase.");
     }
   }
+  async sumAmount(userId: number, vl: number): Promise<void> {
+    try {
+      await this.prismaClient.users.update({
+        where: {id: userId},
+        data: { amount: { increment: vl } }
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Error("Erro dataBase.");
+    }
+  }
 }

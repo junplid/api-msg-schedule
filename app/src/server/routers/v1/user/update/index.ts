@@ -178,6 +178,7 @@ router.put(
           "string.base": "O campo precisa ser uma string",
           "string.pattern.base": "Valor invalido",
         }),
+      valueaction: Joi.number(),
       price: Joi.number().min(0).required().messages({
         "any.empty": "Campo obrigatório",
         "any.required": "Campo obrigatório",

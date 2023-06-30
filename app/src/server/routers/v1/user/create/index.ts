@@ -139,15 +139,11 @@ router.post(
         "any.required": "Campo obrigatório",
         "string.base": "O campo precisa ser uma string",
       }),
-      whatsapp: Joi.string()
-        .regex(/^[1-9]{2}(?:[2-8]|9[1-9])[0-9]{3}[0-9]{4}$/)
-        .required()
-        .messages({
-          "string.empty": "Campo obrigatório",
-          "any.required": "Campo obrigatório",
-          "string.base": "Este campo precisa ser uma string",
-          "string.pattern.base": "Insira um whatsapp valido",
-        }),
+      whatsapp: Joi.string().required().messages({
+        "string.empty": "Campo obrigatório",
+        "any.required": "Campo obrigatório",
+        "string.base": "Este campo precisa ser uma string",
+      }),
       login: Joi.string().messages({
         "string.base": "Este campo precisa ser uma string",
       }),

@@ -18,4 +18,19 @@ export class CreatePaymentImplementation
       throw new Error("Erro dataBase.");
     }
   }
+  async sumAmount(
+    userId: number,
+    incre?: number,
+    decre?: number
+  ): Promise<void> {
+    try {
+      await this.prismaClient.users.update({
+        where: { id: userId },
+        data: { amount: { increment: incre, decrement: decre } },
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Error("Erro dataBase.");
+    }
+  }
 }

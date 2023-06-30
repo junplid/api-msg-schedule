@@ -23,7 +23,7 @@ export class DellPaymentOfUserUseCase {
       };
     }
 
-    if (keyUserMsg !== userId) {
+    if (keyUserMsg.userId !== userId) {
       throw {
         message: "Só é possível excluir os seus pagamentos.",
         statusCode: 400,
@@ -35,7 +35,17 @@ export class DellPaymentOfUserUseCase {
       };
     }
 
+    let vl = 0;
+
+    if (keyUserMsg.type_transation === "PROHIBITED") {
+      vl = Number(keyUserMsg.price) * -1;
+    }
+    if (keyUserMsg.type_transation === "EXIT") {
+      vl = Number(keyUserMsg.price);
+    }
+
     await this.dellPaymentOfUser.dell(Number(dto.id));
+    await this.dellPaymentOfUser.decAmount(keyUserMsg.userId, vl);
     return { message: "OK" };
   }
 }

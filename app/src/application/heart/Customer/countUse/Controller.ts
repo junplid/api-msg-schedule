@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
-import { ListCustomerOfUserDTO_I } from "./DTO";
-import { ListCustomerOfUserUseCase } from "./UseCase";
+import { CountCustomerOfUserDTO_I } from "./DTO";
+import { CountCustomerOfUserUseCase } from "./UseCase";
 import { ValidationError } from "express-validation";
 
-export const ListCustomerOfUserController = (
-  listCustomerOfUserUseCase: ListCustomerOfUserUseCase
+export const CountCustomerOfUserController = (
+  countCustomerOfUserUseCase: CountCustomerOfUserUseCase
 ) => {
   const execute = async (
-    req: Request<any, any, { userId: number }, ListCustomerOfUserDTO_I>,
+    req: Request<any, any, { userId: number }, CountCustomerOfUserDTO_I>,
     res: Response
   ): Promise<Response> => {
     try {
-      const data = await listCustomerOfUserUseCase.run({
+      const data = await countCustomerOfUserUseCase.run({
         ...req.body,
         ...req.query,
       });

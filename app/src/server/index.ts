@@ -82,6 +82,13 @@ const createSession = async (key: string) => {
         const dataDeNotificacao = new Date();
 
         customer?.forEach((cust) => {
+          if (new Date(cust.dueDate!) < new Date()) {
+            new PrismaClient().customers.update({
+              where: { id: cust.id },
+              data: { invoice: "PENDING" },
+            });
+          }
+
           cust?.message?.forEach((msg) => {
             dataDeNotificacao.setDate(
               dataDeNotificacao.getDate() - msg.message.days
@@ -89,7 +96,7 @@ const createSession = async (key: string) => {
 
             if (cust?.dueDate && new Date(cust.dueDate) < dataDeNotificacao) {
               client.sendText(
-                `55${cust.whatsapp}@c.us`,
+                `${cust.whatsapp}@c.us`,
                 `${msg.message.text
                   .replace(/\{NOME\}/, cust.full_name)
                   .replace(/\{PRIMEIRO_NOME\}/, cust.full_name.split(" ")[0])
@@ -156,7 +163,7 @@ new CronJob(
         users?.map(async (user) => {
           try {
             await storeSessions[userRoot?.id!]?.sendText(
-              `55${user.whatsapp}@c.us`,
+              `${user.whatsapp}@c.us`,
               `**${user.full_name}**, informamos que a sua licença para utilizar o sistema expirou, resultando na interrupção dos serviços do seu bot. Para continuar utilizando nossos serviços, renove a sua licença por mais 30 dias!`
             );
             return;

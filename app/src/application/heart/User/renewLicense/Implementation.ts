@@ -40,4 +40,22 @@ export class RenewLicenseImplementation
       throw new Error("Erro dataBase.");
     }
   }
+
+  async sumAmount(vl: number): Promise<void> {
+    try {
+      const data = await this.prismaClient.users.findFirst({
+        where: { type: "root" },
+        select: { id: true },
+      });
+      if (data) {
+        await this.prismaClient.users.update({
+          where: { id: data.id },
+          data: { amount: { increment: vl } },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      throw new Error("Erro dataBase.");
+    }
+  }
 }

@@ -5,4 +5,5 @@ export interface UpdatePaymentDTO_I {
   userId: number;
   date: Date;
   id: number;
+  valueaction: number;
 }

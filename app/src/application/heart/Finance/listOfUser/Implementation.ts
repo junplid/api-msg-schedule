@@ -27,7 +27,6 @@ export class ListFinanceOfUserImplementation
   }
   async get(props: propsGet_I): Promise<resultList_I[]> {
     try {
-      console.log(props);
       const datas = await this.prismaClient.payments.findMany({
         orderBy: { id: "desc" },
         where: {

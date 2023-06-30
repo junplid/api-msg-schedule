@@ -18,4 +18,19 @@ export class UpdatePaymentImplementation
       throw new Error("Erro dataBase.");
     }
   }
+
+  async updateAmountUser(data: {
+    valueaction: number;
+    userId: number;
+  }): Promise<void> {
+    try {
+      await this.prismaClient.users.update({
+        data: { amount: { increment: data.valueaction } },
+        where: { id: data.userId },
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Error("Erro dataBase.");
+    }
+  }
 }

@@ -17,6 +17,7 @@ model users {
   code      String?     @db.VarChar(5)
   available Int?        @default(0)
   payday    DateTime?
+  amount    Decimal     @default(0)
   due_date  DateTime?
   createAt  DateTime    @default(now())
   customer  customers[]
@@ -73,7 +74,7 @@ model plans {
 model customers {
   id        Int                  @id @default(autoincrement())
   full_name String
-  whatsapp  String               @db.VarChar(15)
+  whatsapp  String               @db.VarChar(21)
   login     String?              @unique
   password  String?
   invoice   String?              @default("PENDING")

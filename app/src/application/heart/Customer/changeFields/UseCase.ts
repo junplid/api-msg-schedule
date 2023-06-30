@@ -1,6 +1,7 @@
 import { ChangeCustomerFieldsRepository_I } from "./Repository";
 import { ChangeCustomerFieldsDTO_I } from "./DTO";
 import { RunUseCase_I } from "../../../../types/global";
+import { Payment_I } from "../../../../entities/Payment";
 
 export class ChangeCustomerFieldsUseCase {
   constructor(private changeCustomerFields: ChangeCustomerFieldsRepository_I) {}
@@ -28,7 +29,7 @@ export class ChangeCustomerFieldsUseCase {
       };
     }
 
-    if (keyUserCust !== userId) {
+    if (keyUserCust.userId !== userId) {
       throw {
         message: "Só é possível editar o seu cliente.",
         statusCode: 400,
@@ -38,6 +39,28 @@ export class ChangeCustomerFieldsUseCase {
         error: "Só é possível editar o seu cliente.",
         name: "unauthorized",
       };
+    }
+
+    if (keyUserCust.invoice === "PENDING" && dto.invoice === "PAY") {
+      const expense_product = await this.changeCustomerFields.findProduct(
+        dto.productId
+      );
+      const price_plan = await this.changeCustomerFields.findPlan(
+        dto.productId
+      );
+
+      const payment: Omit<Payment_I, "id"> = {
+        payday: new Date(),
+        price: Number(price_plan) - Number(expense_product!.price),
+        type: "user",
+        userId: keyUserCust.userId,
+        name: `Venda efetuada: ${expense_product!.name}, CLI: ${
+          keyUserCust.full_name
+        }, Id Cliente: ${dto.id}`,
+        type_transation: "PROHIBITED",
+      };
+
+      await this.changeCustomerFields.createPayment(payment as Payment_I);
     }
 
     await this.changeCustomerFields.update({

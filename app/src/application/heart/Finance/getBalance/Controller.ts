@@ -1,17 +1,19 @@
 import { Request, Response } from "express";
-import { CountCustomerUserDTO_I } from "./DTO";
-import { CountCustomerUserUseCase } from "./UseCase";
+import { GetBalanceOfUserDTO_I } from "./DTO";
+import { GetBalanceOfUserUseCase } from "./UseCase";
 import { ValidationError } from "express-validation";
 
-export const CountCustomerUserController = (
-  countCustomerUserUseCase: CountCustomerUserUseCase
+export const GetBalanceOfUserController = (
+  getBalanceOfUserUseCase: GetBalanceOfUserUseCase
 ) => {
   const execute = async (
-    req: Request<any, any, CountCustomerUserDTO_I>,
+    req: Request<any, any, GetBalanceOfUserDTO_I>,
     res: Response
   ): Promise<Response> => {
     try {
-      const data = await countCustomerUserUseCase.run(req.body);
+      const data = await getBalanceOfUserUseCase.run({
+        ...req.params,
+      });
       return res.status(200).json(data);
     } catch (error: any) {
       if (error instanceof ValidationError) {

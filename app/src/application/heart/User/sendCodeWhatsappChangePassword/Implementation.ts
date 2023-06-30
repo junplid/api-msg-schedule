@@ -38,7 +38,7 @@ export class SendCodeWhatsappChangePasswordImplementation
   async sendCodeWhatsApp(props: propsSend_I): Promise<boolean> {
     try {
       await storeSessions[props.rootId]?.sendText(
-        `55${props.whatsapp}@c.us`,
+        `${props.whatsapp}@c.us`,
         `Seu código para trocar a senha é:
 *${props.code}*. Para sua segurança,
 Não o compartilhe.`

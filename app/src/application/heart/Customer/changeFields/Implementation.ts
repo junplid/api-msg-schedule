@@ -1,5 +1,7 @@
 import { ChangeCustomerFieldsRepository_I, propsUpdate_I } from "./Repository";
 import { PrismaCore } from "../../../implementations/core";
+import { Payment_I } from "../../../../entities/Payment";
+import { Decimal } from "@prisma/client/runtime";
 
 export class ChangeCustomerFieldsImplementation
   extends PrismaCore
@@ -42,13 +44,54 @@ export class ChangeCustomerFieldsImplementation
     }
   }
 
-  async findCust(id: number): Promise<number | null> {
+  async findProduct(
+    pdrId: number
+  ): Promise<{ price: number | Decimal; name: string } | null> {
+    try {
+      const data = await this.prismaClient.products.findUnique({
+        where: { id: pdrId },
+        select: { price: true, name: true },
+      });
+      return data ?? null;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Erro dataBase.");
+    }
+  }
+  async findPlan(planId: number): Promise<number | Decimal | null> {
+    try {
+      const data = await this.prismaClient.plans.findUnique({
+        where: { id: planId },
+        select: { price: true },
+      });
+      return data?.price ?? null;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Erro dataBase.");
+    }
+  }
+
+  async createPayment(data: Payment_I): Promise<void> {
+    try {
+      await this.prismaClient.payments.create({ data });
+    } catch (error) {
+      console.log(error);
+      throw new Error("Erro dataBase.");
+    }
+  }
+
+  async findCust(id: number): Promise<{
+    invoice: string | null;
+    userId: number;
+    full_name: string;
+    login: string | null;
+  } | null> {
     try {
       const data = await this.prismaClient.customers.findUnique({
         where: { id },
-        select: { userId: true },
+        select: { userId: true, invoice: true, full_name: true, login: true },
       });
-      return data?.userId ?? null;
+      return data ?? null;
     } catch (error) {
       console.log(error);
       throw new Error("Erro dataBase.");

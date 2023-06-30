@@ -12,6 +12,8 @@ export class RenewCustomerImplementation
         where: { id: customerId },
         select: {
           userId: true,
+          full_name: true,
+          login: true,
           plan: {
             select: { price: true },
           },
@@ -29,6 +31,8 @@ export class RenewCustomerImplementation
             sale: data.product!.price,
             userId: data.userId,
             name: data.product!.name,
+            login: data.login,
+            full_name: data.full_name,
           }
         : null;
     } catch (error) {
@@ -50,6 +54,17 @@ export class RenewCustomerImplementation
   async createPayment(data: Payment_I): Promise<void> {
     try {
       await this.prismaClient.payments.create({ data });
+    } catch (error) {
+      console.log(error);
+      throw new Error("Erro dataBase.");
+    }
+  }
+  async sumAmount(userId: number, vl: number): Promise<void> {
+    try {
+      await this.prismaClient.users.update({
+        where: { id: userId },
+        data: { amount: { increment: vl } },
+      });
     } catch (error) {
       console.log(error);
       throw new Error("Erro dataBase.");
