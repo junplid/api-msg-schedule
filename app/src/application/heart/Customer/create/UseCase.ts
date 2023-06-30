@@ -30,9 +30,7 @@ export class CreateCustomerUseCase {
         price: Number(price_plan) - Number(expense_product.price),
         type: "user",
         userId: dto.userId,
-        name: `Venda efetuada: ${expense_product!.name}, CLI: ${
-          dto.full_name
-        }, Id Cliente: ${customerId}`,
+        name: `Venda efetuada ${dto.full_name}, Id Cliente: ${customerId}`,
         type_transation: "PROHIBITED",
       };
 

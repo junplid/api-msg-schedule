@@ -47,7 +47,7 @@ export class RenewCustomerUseCase {
       price: userIdCust.profit,
       type: "user",
       userId: userIdCust.userId,
-      name: `Renovação efetuada: ${userIdCust.name}, CLI: ${userIdCust.full_name}, Id Cliente: ${dto.customerId}`,
+      name: `Renovação efetuada: ${userIdCust.full_name}, Id Cliente: ${dto.customerId}`,
       type_transation: "PROHIBITED",
     };
 

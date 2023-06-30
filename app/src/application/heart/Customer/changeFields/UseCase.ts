@@ -54,9 +54,7 @@ export class ChangeCustomerFieldsUseCase {
         price: Number(price_plan) - Number(expense_product!.price),
         type: "user",
         userId: keyUserCust.userId,
-        name: `Venda efetuada: ${expense_product!.name}, CLI: ${
-          keyUserCust.full_name
-        }, Id Cliente: ${dto.id}`,
+        name: `Venda efetuada: ${keyUserCust.full_name}, Id Cliente: ${dto.id}`,
         type_transation: "PROHIBITED",
       };
 
