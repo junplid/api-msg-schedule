@@ -16,9 +16,7 @@ router.put(
       full_name: Joi.string().max(200).regex(/^\D+$/).messages({
         "string.pattern.base": "Não inclua número(s)",
       }),
-      whatsapp: Joi.string().regex(
-        /^[1-9]{2}(?:[2-8]|9[1-9])[0-9]{3}[0-9]{4}$/
-      ),
+      whatsapp: Joi.string().regex(/^\d+$/),
       password: Joi.string().min(6),
     }),
     body: Joi.object({
