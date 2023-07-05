@@ -43,6 +43,7 @@ export class SendMessageCustomerUseCase {
         await storeSessions[userId]?.sendText(
           `${custInfo.whatsapp}@c.us`,
           `${dto.text
+            .replace(/\\n/g, "\n")
             .replace(/\{NOME\}/, custInfo.full_name)
             .replace(/\{PRIMEIRO_NOME\}/, custInfo.full_name.split(" ")[0])
             .replace(/\{ZAP\}/, custInfo.whatsapp)

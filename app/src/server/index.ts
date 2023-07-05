@@ -98,6 +98,7 @@ const createSession = async (key: string) => {
               client.sendText(
                 `${cust.whatsapp}@c.us`,
                 `${msg.message.text
+                  .replace(/\\n/g, "\n")
                   .replace(/\{NOME\}/, cust.full_name)
                   .replace(/\{PRIMEIRO_NOME\}/, cust.full_name.split(" ")[0])
                   .replace(/\{ZAP\}/, cust.whatsapp)
