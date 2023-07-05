@@ -9,10 +9,4 @@ WORKDIR /app
 
 EXPOSE $NODE_DOCKER_PORT
 
-CMD npm run dev
-
-# CMD if [ "$ENVIRONMENT" = "DEV" ]; then \
-#       npm run dev; \
-#     else \
-#       npm run start; \
-#     fi
+CMD npm run start
