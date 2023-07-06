@@ -68,7 +68,7 @@ const createSession = async (key: string) => {
             login: true,
             id: true,
             comments: true,
-            plan: { select: { name: true } },
+            plan: { select: { name: true, price: true } },
             product: { select: { name: true } },
             message: {
               include: {
@@ -105,6 +105,12 @@ const createSession = async (key: string) => {
                   .replace(/\{LOGIN\}/, cust?.login ?? "{LOGIN}")
                   .replace(/\{SENHA\}/, cust?.password ?? "{SENHA}")
                   .replace(/\{PLANO\}/, cust?.plan?.name ?? "{PLANO}")
+                  .replace(
+                    /\{PRECO_PLANO\}/,
+                    cust?.plan?.price
+                      ? String(cust?.plan?.price)
+                      : "{VALOR_PLANO}"
+                  )
                   .replace(/\{PRODUTO\}/, cust?.product?.name ?? "{PRODUTO}")
                   .replace(/\{OBS\}/, cust?.comments ?? "{OBS}")
                   .replace(

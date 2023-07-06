@@ -50,6 +50,12 @@ export class SendMessageCustomerUseCase {
             .replace(/\{LOGIN\}/, custInfo?.login ?? "{LOGIN}")
             .replace(/\{SENHA\}/, custInfo?.password ?? "{SENHA}")
             .replace(/\{PLANO\}/, custInfo?.plan?.name ?? "{PLANO}")
+            .replace(
+              /\{PRECO_PLANO\}/,
+              custInfo?.plan?.price
+                ? String(custInfo?.plan?.price)
+                : "{VALOR_PLANO}"
+            )
             .replace(/\{PRODUTO\}/, custInfo?.product?.name ?? "{PRODUTO}")
             .replace(/\{OBS\}/, custInfo?.comments ?? "{OBS}")
             .replace(

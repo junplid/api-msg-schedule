@@ -1,3 +1,5 @@
+import { Decimal } from "@prisma/client/runtime";
+
 type Invoice_T = "PAY" | "PENDING";
 
 export type propsUpdate_I = {
@@ -17,7 +19,7 @@ export interface result_I {
   userId: number;
   login: string | null;
   password: string | null;
-  plan: { name: string } | null;
+  plan: { name: string; price: Decimal } | null;
   product: { name: string } | null;
   comments: string | null;
   dueDate: Date | null;

@@ -34,7 +34,7 @@ export class SendMessageCustomerImplementation
           login: true,
           password: true,
           product: { select: { name: true } },
-          plan: { select: { name: true } },
+          plan: { select: { name: true, price: true } },
         },
       });
       return data ?? null;
