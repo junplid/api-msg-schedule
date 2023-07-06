@@ -55,6 +55,7 @@ router.post(
         "any.empty": "Campo obrigatório",
         "any.required": "Campo obrigatório",
       }),
+      message: Joi.string(),
     }),
   }),
   renewCustomerController

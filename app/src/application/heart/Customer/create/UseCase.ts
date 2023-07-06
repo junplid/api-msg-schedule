@@ -20,7 +20,7 @@ export class CreateCustomerUseCase {
       const expense_product = await this.createCustomer.findProduct(
         dto.productId
       );
-      const price_plan = await this.createCustomer.findPlan(dto.productId);
+      const price_plan = await this.createCustomer.findPlan(dto.planId);
 
       if (!expense_product || !price_plan)
         throw new Error("notfound expense/price product");

@@ -9,6 +9,18 @@ export interface resultFind_I {
   login: string | null;
   userId: number;
   name: string;
+  whatsapp: string;
+  password: string | null;
+  plan: {
+    price: Decimal;
+    name: string;
+  } | null;
+  product: {
+    price: Decimal;
+    name: string;
+  } | null;
+  comments: string | null;
+  dueDate: Date | null;
 }
 
 export interface RenewCustomerRepository_I {

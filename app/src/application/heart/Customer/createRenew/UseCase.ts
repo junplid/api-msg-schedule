@@ -2,6 +2,7 @@ import { RenewCustomerRepository_I } from "./Repository";
 import { RenewCustomerDTO_I } from "./DTO";
 import { RunUseCase_I } from "../../../../types/global";
 import { Payment_I } from "../../../../entities/Payment";
+import { storeSessions } from "../../../../sessionsStore";
 
 export class RenewCustomerUseCase {
   constructor(private renewCustomer: RenewCustomerRepository_I) {}
@@ -53,6 +54,34 @@ export class RenewCustomerUseCase {
 
     await this.renewCustomer.createPayment(payment as Payment_I);
     await this.renewCustomer.sumAmount(dto.userId, Number(userIdCust.profit));
+
+    if (dto.message) {
+      await storeSessions[dto.userId]?.sendText(
+        `${userIdCust.whatsapp}@c.us`,
+        `${dto.message
+          .replace(/\\n/g, "\n")
+          .replace(/\{NOME\}/, userIdCust.full_name)
+          .replace(/\{PRIMEIRO_NOME\}/, userIdCust.full_name.split(" ")[0])
+          .replace(/\{ZAP\}/, userIdCust.whatsapp)
+          .replace(/\{LOGIN\}/, userIdCust?.login ?? "{LOGIN}")
+          .replace(/\{SENHA\}/, userIdCust?.password ?? "{SENHA}")
+          .replace(/\{PLANO\}/, userIdCust?.plan?.name ?? "{PLANO}")
+          .replace(
+            /\{PRECO_PLANO\}/,
+            userIdCust?.plan?.price
+              ? String(userIdCust?.plan?.price)
+              : "{VALOR_PLANO}"
+          )
+          .replace(/\{PRODUTO\}/, userIdCust?.product?.name ?? "{PRODUTO}")
+          .replace(/\{OBS\}/, userIdCust?.comments ?? "{OBS}")
+          .replace(
+            /\{DATA_VENCI\}/,
+            userIdCust?.dueDate
+              ? new Date(userIdCust.dueDate).toLocaleDateString("pt-br")
+              : "{DATA_VENCI}"
+          )}`
+      );
+    }
 
     return { message: "OK" };
   }

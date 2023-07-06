@@ -14,16 +14,23 @@ export class RenewCustomerImplementation
           userId: true,
           full_name: true,
           login: true,
+          whatsapp: true,
+          comments: true,
           plan: {
-            select: { price: true },
+            select: { price: true, name: true },
           },
+          password: true,
           product: {
             select: { price: true, name: true },
           },
+          dueDate: true,
         },
       });
       return data
         ? {
+            dueDate: data.dueDate,
+            comments: data.comments,
+            password: data.password,
             expense: data.product!.price,
             profit: Math.abs(
               Number(data.plan!.price) - Number(data.product!.price)
@@ -33,6 +40,9 @@ export class RenewCustomerImplementation
             name: data.product!.name,
             login: data.login,
             full_name: data.full_name,
+            whatsapp: data.whatsapp,
+            plan: data.plan,
+            product: data.product,
           }
         : null;
     } catch (error) {
